@@ -78,9 +78,17 @@
     [[MoEngage sharedInstance] registerForPush:deviceToken];
 }
 
+-(void)registeredForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken{
+    [[MoEngage sharedInstance] registerForPush:deviceToken];
+}
+
 - (void)reset
 {
     [[MoEngage sharedInstance] resetUser];
+}
+
+-(void)applicationDidFinishLaunching:(NSNotification *)notification{
+    [[MoEngage sharedInstance]didReceieveNotificationinApplication:nil withInfo:notification.userInfo];
 }
 
 - (void)applicationDidBecomeActive
