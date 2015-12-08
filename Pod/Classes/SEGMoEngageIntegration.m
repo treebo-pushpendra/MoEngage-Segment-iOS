@@ -25,47 +25,79 @@
 
 - (void)identify:(SEGIdentifyPayload *)payload
 {
-    NSDictionary *traits = payload.traits;
-
+    NSDictionary *moengagePayloadDict = [payload.traits copy];
+    
+    NSMutableDictionary *traits = [NSMutableDictionary dictionaryWithDictionary:moengagePayloadDict];
+    if(![traits.allKeys count]){
+        return;
+    }
+    
+    if(payload.userId.length){
+        [[MoEngage sharedInstance] setUserAttribute:payload.userId forKey:USER_ATTRIBUTE_UNIQUE_ID];
+    }
     if ([traits objectForKey:@"id"]) {
         [[MoEngage sharedInstance] setUserAttribute:[traits objectForKey:@"id"] forKey:USER_ATTRIBUTE_UNIQUE_ID];
+        [traits removeObjectForKey:@"id"];
     }
-
+    
     if ([traits objectForKey:@"email"]) {
         [[MoEngage sharedInstance] setUserAttribute:[traits objectForKey:@"email"] forKey:USER_ATTRIBUTE_USER_EMAIL];
+        [traits removeObjectForKey:@"email"];
     }
-
+    
     if ([traits objectForKey:@"name"]) {
-        [[MoEngage sharedInstance] setUserAttribute:[traits objectForKey:@"username"] forKey:USER_ATTRIBUTE_USER_NAME];
+        [[MoEngage sharedInstance] setUserAttribute:[traits objectForKey:@"name"] forKey:USER_ATTRIBUTE_USER_NAME];
+        [traits removeObjectForKey:@"name"];
     }
-
+    
     if ([traits objectForKey:@"phone"]) {
         [[MoEngage sharedInstance] setUserAttribute:[traits objectForKey:@"phone"] forKey:USER_ATTRIBUTE_USER_MOBILE];
+        [traits removeObjectForKey:@"phone"];
     }
-
+    
     if ([traits objectForKey:@"firstName"]) {
         [[MoEngage sharedInstance] setUserAttribute:[traits objectForKey:@"firstName"] forKey:USER_ATTRIBUTE_USER_FIRST_NAME];
+        [traits removeObjectForKey:@"firstName"];
     }
-
+    
     if ([traits objectForKey:@"lastName"]) {
         [[MoEngage sharedInstance] setUserAttribute:[traits objectForKey:@"lastName"] forKey:USER_ATTRIBUTE_USER_LAST_NAME];
+        [traits removeObjectForKey:@"lastName"];
     }
-
+    
     if ([traits objectForKey:@"gender"]) {
         [[MoEngage sharedInstance] setUserAttribute:[traits objectForKey:@"gender"] forKey:USER_ATTRIBUTE_USER_GENDER];
+        [traits removeObjectForKey:@"gender"];
     }
-
+    
     if ([traits objectForKey:@"birthday"]) {
         [[MoEngage sharedInstance] setUserAttribute:[traits objectForKey:@"birthday"] forKey:USER_ATTRIBUTE_USER_BDAY];
+        [traits removeObjectForKey:@"birthday"];
     }
-
+    
     if ([traits objectForKey:@"address"]) {
         [[MoEngage sharedInstance] setUserAttribute:[traits objectForKey:@"address"] forKey:@"address"];
+        [traits removeObjectForKey:@"address"];
     }
-
+    
     if ([traits objectForKey:@"age"]) {
         [[MoEngage sharedInstance] setUserAttribute:[traits objectForKey:@"age"] forKey:@"age"];
+        [traits removeObjectForKey:@"age"];
     }
+    
+    @try {
+        for (NSString *key in [traits allKeys]) {
+            id value = [traits objectForKey:key];
+            if (value != nil){
+                [[MoEngage sharedInstance] setUserAttribute:value forKey:key];
+            }
+        }
+    }
+    @catch (NSException *exception) {
+        // Possible if value is an unsupported type in the dictionary
+        NSLog(@"Segment - MoEngage - Exception while adding traits is %@", exception);
+    }
+    @finally {}
 }
 
 - (void)flush
