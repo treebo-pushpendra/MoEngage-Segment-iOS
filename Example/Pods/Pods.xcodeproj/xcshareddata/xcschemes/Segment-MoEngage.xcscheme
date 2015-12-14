@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = 'A5C82179D75C18017D6AA748'
+               BlueprintIdentifier = 'F40FC624DD7EB9743F44EDD7'
                BlueprintName = 'Segment-MoEngage'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'libSegment-MoEngage.a'>
