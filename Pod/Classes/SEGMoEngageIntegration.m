@@ -97,7 +97,6 @@
         // Possible if value is an unsupported type in the dictionary
         NSLog(@"Segment - MoEngage - Exception while adding traits is %@", exception);
     }
-    @finally {}
 }
 
 - (void)flush
