@@ -28,7 +28,7 @@
     NSDictionary *moengagePayloadDict = [payload.traits copy];
     
     NSMutableDictionary *traits = [NSMutableDictionary dictionaryWithDictionary:moengagePayloadDict];
-    if(![traits.allKeys count]){
+    if(![traits count]){
         return;
     }
     
