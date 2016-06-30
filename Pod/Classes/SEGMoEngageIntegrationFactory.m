@@ -4,10 +4,10 @@
 
 @implementation SEGMoEngageIntegrationFactory
 
-+ (id)instance
++ (instancetype)instance
 {
     static dispatch_once_t once;
-    static SEGMoEngageIntegration *sharedInstance;
+    static SEGMoEngageIntegrationFactory *sharedInstance;
     dispatch_once(&once, ^{
         sharedInstance = [[self alloc] init];
     });
