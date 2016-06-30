@@ -22,10 +22,10 @@
   "source_files": "Pod/Classes/**/*",
   "dependencies": {
     "Analytics": [
-      "~> 3.0.3"
+      "~> 3.0"
     ],
     "MoEngage-iOS-SDK": [
-      "~> 1.8.5"
+      "~> 1.8"
     ]
   }
 }
