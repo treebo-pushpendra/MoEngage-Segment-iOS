@@ -1,12 +1,10 @@
-source 'https://github.com/CocoaPods/Specs.git'
+target 'Segment-MoEngage_Example' do
+  pod 'Segment-MoEngage', :path => '../'
 
-target 'Segment-MoEngage_Example', :exclusive => true do
-  pod "Segment-MoEngage", :path => "../"
-end
+  target 'Segment-MoEngage_Tests' do
+    inherit! :search_paths
 
-target 'Segment-MoEngage_Tests', :exclusive => true do
-  pod "Segment-MoEngage", :path => "../"
-
-  pod 'Specta'
-  pod 'Expecta'
+    pod 'Specta'
+    pod 'Expecta'
+  end
 end
