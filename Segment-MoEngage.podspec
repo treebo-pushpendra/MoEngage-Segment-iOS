@@ -10,11 +10,11 @@ Pod::Spec.new do |s|
                        This is the MoEngage integration for the iOS library.
                        DESC
 
-  s.homepage         = "http://segment.com/"
+  s.homepage         = "http://moengage.com/"
   s.license          =  { :type => 'MIT' }
-  s.author           = { "Segment" => "friends@segment.com" }
-  s.source           = { :git => "https://github.com/segment-integrations/analytics-ios-integration-moengage.git", :tag => s.version.to_s }
-  s.social_media_url = 'https://twitter.com/segment'
+  s.author           = { "MoEngage" => "gautam@moengage.com" }
+  s.source           = { :git => "https://github.com/moengage/MoEngage-Segment-iOS.git", :tag => s.version.to_s }
+  s.social_media_url = 'https://twitter.com/moengage'
 
   s.platform     = :ios, '8.0'
   s.requires_arc = true
@@ -22,5 +22,5 @@ Pod::Spec.new do |s|
   s.source_files = 'Pod/Classes/**/*'
 
   s.dependency 'Analytics', '~> 3.0'
-  s.dependency 'MoEngage-iOS-SDK', '~> 1.8'
+  s.dependency 'MoEngage-iOS-SDK', '~>2.0'
 end
