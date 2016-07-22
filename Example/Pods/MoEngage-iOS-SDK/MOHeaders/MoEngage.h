@@ -5,7 +5,7 @@
 //  Created by Karthik Thirumalasetti on 06/07/14.
 //  Copyright (c) 2014 alphadevs. All rights reserved.
 //
-// SDK Version 1.8.4
+// SDK Version 1.9.5
 
 #import <CoreLocation/CoreLocation.h>
 #import <Foundation/Foundation.h>
@@ -15,6 +15,12 @@ typedef enum _AppStatus{
     INSTALL,
     UPDATE
 }AppStatus;
+
+typedef enum _LogLevel{
+    LOG_NONE,
+    LOG_ALL,
+    LOG_EXCEPTIONS
+}LogLevel;
 
 /** 
  Conform to this protocol if you want to handle the action of the in-app messages' button clicks.
@@ -163,7 +169,7 @@ typedef enum _AppStatus{
  @param locationAttrName The name of the location attribute
  @param dict The dict associated with this location event, if any
  */
-+(void)setLocationwithLat:(double)lat lng:(double)lng withName:(NSString*)locationAttrName inDictionary:(NSMutableDictionary*) dict;
++(void)setLocationwithLat:(double)lat lng:(double)lng withName:(NSString*)locationAttrName inDictionary:(NSMutableDictionary*) dict __deprecated_msg("use setUserAttributeLocationLatitude:longitude:forKey: instead");
 
 /**
  Call this method in AppDelegate in applicationWillTerminate
@@ -195,24 +201,16 @@ typedef enum _AppStatus{
 -(UIView *)getNudgeView;
 
 /**
+ Call this method to get the nudge view for a specific screen. This param is passed in the iOS screen name or Show only in screen, while creating a nudge on the dashboard.
+ @param viewController - The View controller for which you want to get the nudge.
+ */
+-(UIView *)getNudgeViewForScreen:(UIViewController*)viewController;
+
+/**
  Use this method to set the app status.
  @param appStatus - Two possible enum values - APP_UDPATE (for app updates) and APP_INSTALL (for new installs)
  */
 -(void)appStatus:(AppStatus)appStatus;
-
-/**
- Use this method in viewWillAppear
- @param screen - The name of the view controller or a similar name to identify the same
- @warning This method is not mandatory for now. If you have both Android and iOS apps, please suffix or prefix the OS name for easier understanding of the marketing team.
- */
--(void)trackScreenStart:(NSString *)screen;
-
-/**
- Use this method in viewWillDisappear
- @param screen - The name of the view controller or a similar name to identify the same
- @warning This method is not mandatory for now. If you have both Android and iOS apps, please suffix or prefix the OS name for easier understanding of the marketing team.
- */
--(void)trackScreenStop:(NSString *)screen;
 
 /**
  Use this method to start tracking geofences for the current location. 
@@ -221,5 +219,30 @@ typedef enum _AppStatus{
  @see MOGeofenceHandler to get completion block
  */
 -(void)startGeofencingWithLocationManager:(CLLocationManager *)locManager andCurrentLocation:(CLLocation *)location;
+
+/**
+ Use this method to enable logs for the MoEngage SDK. You can simply pass yes and no to disable the logs.
+ Alternatively you can use Log Levels.
+ @see LogLevel
+ */
++(void)debug:(LogLevel) logLevel;
+
+@end
+
+@interface MoEngage (Deprecated)
+
+/**
+ Use this method in viewWillAppear
+ @param screen - The name of the view controller or a similar name to identify the same
+ @warning This method is not mandatory for now. If you have both Android and iOS apps, please suffix or prefix the OS name for easier understanding of the marketing team.
+ */
+-(void)trackScreenStart:(NSString *)screen __deprecated_msg("use trackEvent with screen name as the event name");
+
+/**
+ Use this method in viewWillDisappear
+ @param screen - The name of the view controller or a similar name to identify the same
+ @warning This method is not mandatory for now. If you have both Android and iOS apps, please suffix or prefix the OS name for easier understanding of the marketing team.
+ */
+-(void)trackScreenStop:(NSString *)screen __deprecated_msg("use trackEvent with screen name as the event name");
 
 @end

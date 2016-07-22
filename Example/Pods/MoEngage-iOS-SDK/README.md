@@ -13,6 +13,32 @@ For more information about the SDK and manual installation, go to the following 
 
 Change log:
 
+v1.9.5
+IDFV can be nil if the device is restarted and not unlocked. While it's extremely rare, it can happen. Added a check for the same.
+
+v1.9.4
+iOS 7 crash while string match for Geofence fix.
+If an attribute is set to nil, a log is printed, and the value is discarded.
+Deprecated setLocationwithLat: lng: . Use setUserAttributeLocationLatitude: longitude: forKey: instead.
+Better tracking of Push Preference for iOS8.
+
+v1.9.3
+Bug fix for events being lost sometimes if sync fails.
+Inbox Storyboard fix for version type. The storyboard didn't open for some versions of Xcode.
+
+v1.9.2
+Now you can get nudges specific to a screen by using getNudgeViewForScreen;
+
+v1.9.1
+Inbox now has the ability to delete a message. Swipe the cell to delete.
+Some Inbox messages coming blank bug fix.
+
+v1.9
+Now you can control MoEngage logs by using [MoEngage debug:YES/NO]; You can also set Log Levels and log everything, nothing or just the exceptions.
+A new event is sent for when a user recieves a notifcation when his app is active.
+Events done during the duration of resetUser were lost (1-2 secs). They won't be lost, but will be attributed to the new user now.
+Nudge view has screenname in it's view layer now. [view.layer valueForKey:@"screenName"]; Using this, you can show nudges on specific screens.
+
 v1.8.5
 Ad Support Framework is weak linked. We will not collect IDFA by default.
 Only if the framework is added, the IDFA will be collected by MoEngage.
