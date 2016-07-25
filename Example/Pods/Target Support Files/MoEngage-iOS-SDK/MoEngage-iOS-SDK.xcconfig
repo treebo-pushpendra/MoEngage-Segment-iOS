@@ -2,7 +2,7 @@ CONFIGURATION_BUILD_DIR = $PODS_CONFIGURATION_BUILD_DIR/MoEngage-iOS-SDK
 GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
 HEADER_SEARCH_PATHS = "${PODS_ROOT}/Headers/Private" "${PODS_ROOT}/Headers/Private/MoEngage-iOS-SDK" "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/Analytics" "${PODS_ROOT}/Headers/Public/Expecta" "${PODS_ROOT}/Headers/Public/MoEngage-iOS-SDK" "${PODS_ROOT}/Headers/Public/Segment-MoEngage" "${PODS_ROOT}/Headers/Public/Specta"
 LIBRARY_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/MoEngage-iOS-SDK"
-OTHER_LDFLAGS = -l"MoEngageSDK" -framework "CoreLocation" -framework "SystemConfiguration"
+OTHER_LDFLAGS = -l"MoEngageSDK" -framework "CoreLocation" -framework "Security" -framework "SystemConfiguration"
 PODS_BUILD_DIR = $BUILD_DIR
 PODS_CONFIGURATION_BUILD_DIR = $PODS_BUILD_DIR/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)
 PODS_ROOT = ${SRCROOT}
