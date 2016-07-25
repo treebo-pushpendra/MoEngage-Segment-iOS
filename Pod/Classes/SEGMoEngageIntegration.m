@@ -12,7 +12,7 @@
 
         NSString *apiKey = [self.settings objectForKey:@"apiKey"];
 
-        [[MoEngage sharedInstance] initializeWithApiKey:apiKey inApplication:[UIApplication sharedApplication] withLaunchOptions:nil];
+        [[MoEngage sharedInstance] initializeProdWithApiKey:apiKey inApplication:[UIApplication sharedApplication] withLaunchOptions:nil openDeeplinkUrlAutomatically:YES];
     }
     return self;
 }
@@ -119,7 +119,7 @@
 }
 
 -(void)applicationDidFinishLaunching:(NSNotification *)notification{
-    [[MoEngage sharedInstance]didReceieveNotificationinApplication:nil withInfo:notification.userInfo];
+    [[MoEngage sharedInstance]didReceieveNotificationinApplication:nil withInfo:notification.userInfo openDeeplinkUrlAutomatically:YES];
 }
 
 - (void)applicationDidBecomeActive
@@ -144,7 +144,7 @@
 
 - (void)receivedRemoteNotification:(NSDictionary *)userInfo
 {
-    [[MoEngage sharedInstance] didReceieveNotificationinApplication:[UIApplication sharedApplication] withInfo:userInfo];
+    [[MoEngage sharedInstance] didReceieveNotificationinApplication:[UIApplication sharedApplication] withInfo:userInfo openDeeplinkUrlAutomatically:YES];
 }
 
 @end
