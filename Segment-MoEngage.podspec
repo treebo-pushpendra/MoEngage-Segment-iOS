@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "Segment-MoEngage"
-  s.version          = "2.0.1"
+  s.version          = "2.1.0"
   s.summary          = "MoEngage Integration for Segment's analytics-ios library."
 
   s.description      = <<-DESC
@@ -12,7 +12,7 @@ Pod::Spec.new do |s|
 
   s.homepage         = "http://moengage.com/"
   s.license          =  { :type => 'MIT' }
-  s.author           = { "MoEngage" => "gautam@moengage.com" }
+  s.author           = { "MoEngage" => "chengappa@moengage.com" }
   s.source           = { :git => "https://github.com/moengage/MoEngage-Segment-iOS.git", :tag => s.version.to_s }
   s.social_media_url = 'https://twitter.com/moengage'
 
@@ -22,5 +22,5 @@ Pod::Spec.new do |s|
   s.source_files = 'Pod/Classes/**/*'
 
   s.dependency 'Analytics', '~> 3.0'
-  s.dependency 'MoEngage-iOS-SDK', '~> 2.0'
+  s.dependency 'MoEngage-iOS-SDK', '~> 3.0'
 end

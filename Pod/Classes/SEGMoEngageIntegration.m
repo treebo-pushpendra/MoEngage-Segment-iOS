@@ -5,14 +5,20 @@
 
 @implementation SEGMoEngageIntegration
 
+#pragma mark- Initialization method
+
 - (id)initWithSettings:(NSDictionary *)settings
 {
     if (self = [super init]) {
         self.settings = settings;
 
         NSString *apiKey = [self.settings objectForKey:@"apiKey"];
-
+    #ifdef DEBUG
+        [[MoEngage sharedInstance] initializeDevWithApiKey:apiKey inApplication:[UIApplication sharedApplication] withLaunchOptions:nil openDeeplinkUrlAutomatically:YES];
+    #else
         [[MoEngage sharedInstance] initializeProdWithApiKey:apiKey inApplication:[UIApplication sharedApplication] withLaunchOptions:nil openDeeplinkUrlAutomatically:YES];
+    #endif
+        
     }
     return self;
 }
@@ -22,6 +28,53 @@
     [[MoEngage sharedInstance] trackEvent:payload.event andPayload:[NSMutableDictionary dictionaryWithDictionary:payload.properties]];
 }
 
+#pragma mark- Application Life cycle methods
+
+-(void)applicationDidFinishLaunching:(NSNotification *)notification{
+    [[MoEngage sharedInstance]didReceieveNotificationinApplication:nil withInfo:notification.userInfo openDeeplinkUrlAutomatically:YES];
+}
+
+- (void)applicationDidBecomeActive
+{
+    [[MoEngage sharedInstance] applicationBecameActiveinApplication:[UIApplication sharedApplication]];
+}
+
+- (void)applicationWillEnterForeground{
+    [[MoEngage sharedInstance] applicationWillEnterForeground:[UIApplication sharedApplication]];
+}
+
+- (void)applicationDidEnterBackground
+{
+    [[MoEngage sharedInstance] stop:[UIApplication sharedApplication]];
+}
+
+- (void)applicationWillTerminate
+{
+    [[MoEngage sharedInstance] applicationTerminated:[UIApplication sharedApplication]];
+}
+
+#pragma mark- Push Notification methods
+
+- (void)registerForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken options:(NSDictionary *)options
+{
+    [[MoEngage sharedInstance] registerForPush:deviceToken];
+}
+
+-(void)registeredForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken{
+    [[MoEngage sharedInstance] registerForPush:deviceToken];
+}
+
+- (void)failedToRegisterForRemoteNotificationsWithError:(NSError *)error
+{
+    [[MoEngage sharedInstance] didFailToRegisterForPush];
+}
+
+- (void)receivedRemoteNotification:(NSDictionary *)userInfo
+{
+    [[MoEngage sharedInstance] didReceieveNotificationinApplication:[UIApplication sharedApplication] withInfo:userInfo openDeeplinkUrlAutomatically:YES];
+}
+
+#pragma mark- Segment callback methods
 
 - (void)identify:(SEGIdentifyPayload *)payload
 {
@@ -104,47 +157,10 @@
     [[MoEngage sharedInstance] syncNow];
 }
 
-- (void)registerForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken options:(NSDictionary *)options
-{
-    [[MoEngage sharedInstance] registerForPush:deviceToken];
-}
-
--(void)registeredForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken{
-    [[MoEngage sharedInstance] registerForPush:deviceToken];
-}
 
 - (void)reset
 {
     [[MoEngage sharedInstance] resetUser];
-}
-
--(void)applicationDidFinishLaunching:(NSNotification *)notification{
-    [[MoEngage sharedInstance]didReceieveNotificationinApplication:nil withInfo:notification.userInfo openDeeplinkUrlAutomatically:YES];
-}
-
-- (void)applicationDidBecomeActive
-{
-    [[MoEngage sharedInstance] applicationBecameActiveinApplication:[UIApplication sharedApplication]];
-}
-
-- (void)applicationDidEnterBackground
-{
-    [[MoEngage sharedInstance] stop:[UIApplication sharedApplication]];
-}
-
-- (void)applicationWillTerminate
-{
-    [[MoEngage sharedInstance] applicationTerminated:[UIApplication sharedApplication]];
-}
-
-- (void)failedToRegisterForRemoteNotificationsWithError:(NSError *)error
-{
-    [[MoEngage sharedInstance] didFailToRegisterForPush];
-}
-
-- (void)receivedRemoteNotification:(NSDictionary *)userInfo
-{
-    [[MoEngage sharedInstance] didReceieveNotificationinApplication:[UIApplication sharedApplication] withInfo:userInfo openDeeplinkUrlAutomatically:YES];
 }
 
 @end
