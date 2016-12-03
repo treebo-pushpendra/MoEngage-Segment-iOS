@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+Version 3.0.0 *(3rd September, 2016)*
+-------------------------------------------
+*(Supports analytics-ios 3.0.1+ and MoEngage 3.0+)*
+Updated to include MoEngage SDK 3.0+
+
 Version 2.0.0 *(2nd August, 2016)*
 -------------------------------------------
 *(Supports analytics-ios 3.0.1+ and MoEngage 2.0+)*
