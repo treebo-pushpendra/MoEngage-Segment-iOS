@@ -13,6 +13,7 @@
 
 - (void)awakeFromNib {
     // Initialization code
+    [super awakeFromNib];
 }
 
 -(void)setDataWithMessage:(MOInboxPushDataModel *)messageDict{
@@ -29,6 +30,7 @@
     }
 }
 
+// Set time of push notification
 -(void)setPushTimeForMessage:(MOInboxPushDataModel *)messageDict{
     if(messageDict.pushTime){
         NSString *dateFormat = @"dd-MMM";
@@ -41,6 +43,7 @@
     }
 }
 
+// Set font for the notificationTextLabel label based on if it was read by user or not
 -(void)setFontForMessage:(MOInboxPushDataModel *)messageDict{
     if(messageDict.isRead){
         if(self.notificationTextReadFont){

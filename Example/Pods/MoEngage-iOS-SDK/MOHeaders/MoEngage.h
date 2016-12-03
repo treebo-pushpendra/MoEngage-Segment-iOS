@@ -5,12 +5,14 @@
 //  Created by Karthik Thirumalasetti on 06/07/14.
 //  Copyright (c) 2014 alphadevs. All rights reserved.
 //
-// SDK Version 2.3.1
+// SDK Version 3.2.1
 
-
+#import <UserNotifications/UserNotifications.h>
+#import <SafariServices/SafariServices.h>
 #import <CoreLocation/CoreLocation.h>
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+
 #import "MOPayloadBuilder.h"
 #import "MOEHelperConstants.h"
 #import "MONotificationCategory.h"
@@ -18,22 +20,34 @@
 
 typedef void(^NudgeCreationCompletionBlock)(UIView *nudgeView, NSString* campaignID);
 
+/**
+ Enumerator to define where to place nudge
+ */
 typedef enum {
     NudgeTop,
     NudgeBottom
 }NudgePosition;
 
+/**
+ Enumerator to differentiate between Install/Update (Existing user or not)
+ */
 typedef enum _AppStatus{
     INSTALL,
     UPDATE
 }AppStatus;
 
+/**
+ Enumerator to set Log Levels for Debugging
+ */
 typedef enum _LogLevel{
     LOG_NONE,
     LOG_ALL,
     LOG_EXCEPTIONS
 }LogLevel;
 
+/**
+ Enumerator which gives which widget in an InApp was clicked in an inApp
+ */
 typedef enum _InAppWidget{
     CLOSE_BUTTON,
     BUTTON,
@@ -69,7 +83,7 @@ typedef enum _InAppWidget{
 
 @end
 
-@interface MoEngage : NSObject
+@interface MoEngage : NSObject <SFSafariViewControllerDelegate>
 
 #pragma mark - Properties 
 
@@ -143,6 +157,25 @@ typedef enum _InAppWidget{
 #pragma mark - Push Notifications
 
 /**
+ * Method to register for push notification(doesn't support Notification Action in OS version below iOS10)
+ @param categories : to set categories for supporting Notification Actions (iOS10)
+ @param categoriesForPreviousOS : to set categories for supporting Notification Actions in iOS8 and iOS9 (This should be a set of MONotificationCategory objects)
+ @param delegate : to set the delegate for UNUserNotificationCenter.
+ */
+-(void)registerForRemoteNotificationWithCategories:(NSSet<UNNotificationCategory*>*)categories andCategoriesForPreviousVersions:(NSSet<MONotificationCategory*>*)categoriesForPreviousOS andWithUserNotificationCenterDelegate:(id)delegate;
+
+/**
+ * Method to send notification categories to SDK to support Notification Action in iOS10 and above
+ */
+-(void)setUserNotificationCategories:(NSSet<UNNotificationCategory*>*)categories;
+
+
+/**
+ * Method to send notification categories to SDK to support Notification Action in iOS8 and iOS9
+ */
+-(void)setNotificationCategoriesForEarlieriOSVersionsWithCategories:(NSSet<MONotificationCategory*>*)categories;
+
+/**
  Call this method in AppDelegate in didRegisterForRemoteNotificationsWithDeviceToken to register your app with MoEngage for push notifications
  @param deviceToken The token of the device for push notifications
  */
@@ -168,15 +201,15 @@ typedef enum _InAppWidget{
 -(void)didFailToRegisterForPush;
 
 /**
- Use this to set categories for notifications. Use MONotificationCategory to create categories.
+ * Call this method in AppDelegate in userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:
  */
--(void)setNotificationCategories:(NSSet*)categories;
+-(void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response;
 
-/**
- Call this method in handleActionWithIdentifier method in the App Delegate.
+
+/*
+ * Call this method in AppDelegate in application:handleActionWithIdentifier:forRemoteNotification:completionHandler:
  */
--(void)handleActionWithIdentifier:(NSString*)identifier forRemoteNotification:(NSDictionary*)notification;
-
+-(void)handleActionWithIdentifier:(NSString *)identifier forRemoteNotification:(NSDictionary *)notification;
 
 #pragma mark - Tracking events and attributes
 
@@ -295,12 +328,16 @@ typedef enum _InAppWidget{
  */
 +(void)debug:(LogLevel) logLevel;
 
+/**
+ Use this method to redirect the data tracked
+ @warning Consult with MoEngage team before using this method for redirecting the data
+ */
++(void)setDataRedirection:(BOOL)value;
 
-#pragma mark - Deprecated methods
-
--(void)initializeWithApiKey:(NSString *)apiKey inApplication:(UIApplication*)application withLaunchOptions:(NSDictionary*)launchOptions __deprecated_msg("use initializeWithApiKey:inApplication:withLaunchOptions:openDeeplinkUrlAutomatically instead");
-
--(void)initializeWithApiKey:(NSString *)apiKey inApplication:(UIApplication *)application withLaunchOptions:(NSDictionary *)launchOptions openDeeplinkUrlAutomatically:(BOOL)openUrl __deprecated_msg("use initializeDevWithApiKey:inApplication:withLaunchOptions:openDeeplinkUrlAutomatically: --AND-- initializeProdWithApiKey:inApplication:withLaunchOptions:openDeeplinkUrlAutomatically: instead to differentiate a dev build to a production build");
+/**
+ Method to set the App Group ID for Notification impression tracking.
+ */
++(void)setAppGroupID:(NSString*)appGroupID;
 
 @end
 

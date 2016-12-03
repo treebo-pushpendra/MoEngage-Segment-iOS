@@ -13,20 +13,17 @@
         self.settings = settings;
 
         NSString *apiKey = [self.settings objectForKey:@"apiKey"];
-    #ifdef DEBUG
-        [[MoEngage sharedInstance] initializeDevWithApiKey:apiKey inApplication:[UIApplication sharedApplication] withLaunchOptions:nil openDeeplinkUrlAutomatically:YES];
-    #else
-        [[MoEngage sharedInstance] initializeProdWithApiKey:apiKey inApplication:[UIApplication sharedApplication] withLaunchOptions:nil openDeeplinkUrlAutomatically:YES];
-    #endif
+        #ifdef DEBUG
+            [[MoEngage sharedInstance] initializeDevWithApiKey:apiKey inApplication:[UIApplication sharedApplication] withLaunchOptions:nil openDeeplinkUrlAutomatically:YES];
+        #else
+            [[MoEngage sharedInstance] initializeProdWithApiKey:apiKey inApplication:[UIApplication sharedApplication] withLaunchOptions:nil openDeeplinkUrlAutomatically:YES];
+        #endif
         
     }
     return self;
 }
 
-- (void)track:(SEGTrackPayload *)payload
-{
-    [[MoEngage sharedInstance] trackEvent:payload.event andPayload:[NSMutableDictionary dictionaryWithDictionary:payload.properties]];
-}
+
 
 #pragma mark- Application Life cycle methods
 
@@ -150,6 +147,11 @@
         // Possible if value is an unsupported type in the dictionary
         NSLog(@"Segment - MoEngage - Exception while adding traits is %@", exception);
     }
+}
+
+- (void)track:(SEGTrackPayload *)payload
+{
+    [[MoEngage sharedInstance] trackEvent:payload.event andPayload:[NSMutableDictionary dictionaryWithDictionary:payload.properties]];
 }
 
 - (void)flush

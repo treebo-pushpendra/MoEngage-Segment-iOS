@@ -1,6 +1,6 @@
 {
   "name": "Segment-MoEngage",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "summary": "MoEngage Integration for Segment's analytics-ios library.",
   "description": "Analytics for iOS provides a single API that lets you\nintegrate with over 100s of tools.\n\nThis is the MoEngage integration for the iOS library.",
   "homepage": "http://moengage.com/",
@@ -8,11 +8,11 @@
     "type": "MIT"
   },
   "authors": {
-    "MoEngage": "gautam@moengage.com"
+    "MoEngage": "chengappa@moengage.com"
   },
   "source": {
     "git": "https://github.com/moengage/MoEngage-Segment-iOS.git",
-    "tag": "2.0.0"
+    "tag": "2.1.0"
   },
   "social_media_url": "https://twitter.com/moengage",
   "platforms": {
@@ -25,7 +25,7 @@
       "~> 3.0"
     ],
     "MoEngage-iOS-SDK": [
-      "~> 2.0"
+      "~> 3.0"
     ]
   }
 }

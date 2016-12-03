@@ -9,9 +9,42 @@ pod install
 
 To update, simply run pod update
 
-For more information about the SDK and manual installation, go to the following link --> http://docs.moengage.com/en/latest/iOS.html
+For more information about the SDK and manual installation, go to the following link --> http://docs.moengage.com/docs/ios-sdk-integration
 
 Change log:
+v3.2.0
+Enabled tracking of push delivery using Notification Extension and AppGroups.
+Enabled Test InApp from push when push is received in foreground. 
+Check in SDK to prevent getting multiple UPDATE events.
+Inbox module changes to get media-attachment sent in case of iOS Rich Notifications.
+
+v3.1.0
+Fixed a bug where InApp was shown even when the keyboard was over the screen. 
+Improved logging mechanism, which will help in debugging any issue which arises.
+
+v3.0.0
+Supports iOS10 changes for Notifications. 
+Makes use of UserNotifications framework for iOS10. 
+Registration for push is handled in SDK now.
+
+v2.4.1
+Cordova plugin updated to add AppID from the plugin add command variables.
+Cordova plugin updated to handle all the lifecycle callbacks on its own, therefore no changes are required in AppDelegate.
+Notifications provided to Remote Notification registration methods and push notification receiving method.
+
+v2.4
+Supporting Nudges for testing inApp campaigns from push notification and added alerts on failure to show test inApps.
+Bug fix : InApp can be shown along with Nudges now.
+Bug fixes in inApp module to show inApp if handleInAppMessage called during fetching inApp from server.
+Inbox module supports notification containing alert as dictionary.
+Bug Fixes for Rich Landing from push notification.
+Improved exception handling in the SDK, along with detailed logs on exceptions to help in debug.
+
+
+v2.3.2
+RichLanding content will be shown in SFSafariViewController for iOS9 and above.
+We are now tracking change in Push Preference status event.
+You can now test inApps through push notification.
 
 v2.3.1
 Bug Fixes for event tracking through inApps and saving data on failure to sync with server.

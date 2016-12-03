@@ -7,13 +7,21 @@
 //
 
 #import "SEGAppDelegate.h"
-
+#import <Analytics/SEGAnalytics.h>
+#import <SEGMoEngageIntegrationFactory.h>
 
 @implementation SEGAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+    
+    SEGAnalyticsConfiguration *configuration = [SEGAnalyticsConfiguration configurationWithWriteKey:@"gpo0YN1hKt9gtwsjMZQ6IT42wRyA4BTA"];
+    [configuration use:[SEGMoEngageIntegrationFactory instance]];
+    configuration.trackApplicationLifecycleEvents = YES; // Enable this to record certain application events automatically!
+    configuration.recordScreenViews = YES; // Enable this to record screen views automatically!
+    [SEGAnalytics setupWithConfiguration:configuration];
+    
     return YES;
 }
 
