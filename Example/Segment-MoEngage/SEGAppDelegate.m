@@ -22,6 +22,8 @@
     configuration.recordScreenViews = YES; // Enable this to record screen views automatically!
     [SEGAnalytics setupWithConfiguration:configuration];
     
+    [[SEGAnalytics sharedAnalytics] identify:@"uniqueID" traits:@{@"email":@"azs"}];
+    
     return YES;
 }
 

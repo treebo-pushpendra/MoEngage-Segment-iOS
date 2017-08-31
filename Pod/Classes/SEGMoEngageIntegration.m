@@ -1,7 +1,8 @@
 #import "SEGMoEngageIntegration.h"
-#import <MoEngage-iOS-SDK/MoEngage.h>
-#import <MoEngage-iOS-SDK/MOEHelperConstants.h>
+#import "MoEngage.h"
+#import "MOEHelperConstants.h"
 
+#define SegmentAnonymousIDAttribute @"USER_ATTRIBUTE_SEGMENT_ID"
 
 @implementation SEGMoEngageIntegration
 
@@ -29,25 +30,6 @@
 
 -(void)applicationDidFinishLaunching:(NSNotification *)notification{
     [[MoEngage sharedInstance]didReceieveNotificationinApplication:nil withInfo:notification.userInfo openDeeplinkUrlAutomatically:YES];
-}
-
-- (void)applicationDidBecomeActive
-{
-    [[MoEngage sharedInstance] applicationBecameActiveinApplication:[UIApplication sharedApplication]];
-}
-
-- (void)applicationWillEnterForeground{
-    [[MoEngage sharedInstance] applicationWillEnterForeground:[UIApplication sharedApplication]];
-}
-
-- (void)applicationDidEnterBackground
-{
-    [[MoEngage sharedInstance] stop:[UIApplication sharedApplication]];
-}
-
-- (void)applicationWillTerminate
-{
-    [[MoEngage sharedInstance] applicationTerminated:[UIApplication sharedApplication]];
 }
 
 #pragma mark- Push Notification methods
@@ -82,6 +64,9 @@
         return;
     }
     
+    if (payload.anonymousId.length) {
+        [[MoEngage sharedInstance] setUserAttribute:payload.anonymousId forKey:SegmentAnonymousIDAttribute];
+    }
     if(payload.userId.length){
         [[MoEngage sharedInstance] setUserAttribute:payload.userId forKey:USER_ATTRIBUTE_UNIQUE_ID];
     }

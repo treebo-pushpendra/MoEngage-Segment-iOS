@@ -43,12 +43,17 @@ BOOL seg_dispatch_is_on_specific_queue(dispatch_queue_t queue)
 void seg_dispatch_specific(dispatch_queue_t queue, dispatch_block_t block,
                            BOOL waitForCompletion)
 {
-    if (dispatch_get_specific((__bridge const void *)queue)) {
+    dispatch_block_t autoreleasing_block = ^{
+      @autoreleasepool {
         block();
+      }
+    };
+    if (dispatch_get_specific((__bridge const void *)queue)) {
+        autoreleasing_block();
     } else if (waitForCompletion) {
-        dispatch_sync(queue, block);
+        dispatch_sync(queue, autoreleasing_block);
     } else {
-        dispatch_async(queue, block);
+        dispatch_async(queue, autoreleasing_block);
     }
 }
 
@@ -86,24 +91,37 @@ void SEGLog(NSString *format, ...)
 
 static id SEGCoerceJSONObject(id obj)
 {
-    // if the object is a NSString, NSNumber or NSNull
+    // Hotfix: Storage format should support NSNull instead
+    if ([obj isKindOfClass:[NSNull class]]) {
+        return @"<null>";
+    }
+    // if the object is a NSString, NSNumber
     // then we're good
     if ([obj isKindOfClass:[NSString class]] ||
-        [obj isKindOfClass:[NSNumber class]] ||
-        [obj isKindOfClass:[NSNull class]]) {
+        [obj isKindOfClass:[NSNumber class]]) {
         return obj;
     }
 
     if ([obj isKindOfClass:[NSArray class]]) {
         NSMutableArray *array = [NSMutableArray array];
-        for (id i in obj)
+        for (id i in obj) {
+            // Hotfix: Storage format should support NSNull instead
+            if ([i isKindOfClass:[NSNull class]]) {
+                continue;
+            }
             [array addObject:SEGCoerceJSONObject(i)];
+        }
         return array;
     }
 
     if ([obj isKindOfClass:[NSDictionary class]]) {
         NSMutableDictionary *dict = [NSMutableDictionary dictionary];
         for (NSString *key in obj) {
+            // Hotfix for issue where SEGFileStorage uses plist which does NOT support NSNull
+            // So when `[NSNull null]` gets passed in as track property values the queue serialization fails
+            if ([obj[key] isKindOfClass:[NSNull class]]) {
+                continue;
+            }
             if (![key isKindOfClass:[NSString class]])
                 SEGLog(@"warning: dictionary keys should be strings. got: %@. coercing "
                        @"to: %@",
@@ -128,6 +146,7 @@ static id SEGCoerceJSONObject(id obj)
 
 static void AssertDictionaryTypes(id dict)
 {
+#ifdef DEBUG
     assert([dict isKindOfClass:[NSDictionary class]]);
     for (id key in dict) {
         assert([key isKindOfClass:[NSString class]]);
@@ -141,6 +160,7 @@ static void AssertDictionaryTypes(id dict)
                [value isKindOfClass:[NSDate class]] ||
                [value isKindOfClass:[NSURL class]]);
     }
+#endif
 }
 
 NSDictionary *SEGCoerceDictionary(NSDictionary *dict)

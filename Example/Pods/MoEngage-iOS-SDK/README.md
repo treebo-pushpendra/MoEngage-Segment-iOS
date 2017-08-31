@@ -9,11 +9,43 @@ pod install
 
 To update, simply run pod update
 
-For more information about the SDK and manual installation, go to the following link --> http://docs.moengage.com/docs/ios-sdk-integration
+For more information about the SDK and manual installation, go to the following link --> http://docs.moengage.com/docs/sdk-integration
 
 Change log:
+
+v3.5.0
+Optimized SDK Network calls.
+Fixed issues with locale tracking in iOS versions below iOS10.
+
+v3.4.3
+Fixed an issue with opening of Deeplinks when app in foreground.
+Fixed a crash in Self-handled InApp
+
+v3.4.1 
+Provided method to delete all the messages from Inbox
+Fixed an issue in Logger class of the SDK.
+
+
+v3.4.0
+Started tracking locale of device
+Started showing reason for failure of displaying inApp in an alert, in case of test inApp from push
+Fixed a bug where test inApp feature for Self-Handled inApp wasn't getting displayed.
+Dictionary returned for self-handled inApp contain's additional parameters now i.e,expiretime, maxTimes, interval, autoDismissInterval, persistent
+
+v3.3.1
+Fixed a compilation issue in OS versions below iOS10 which occured in Swift Xcode Projects due to UserNotifications framework.
+
+v3.3.0
+App Lifecycle methods which were earlier called from App Delegate are deprecated now, SDK is internally handling these methods.
+Optimization in syncing of tracked events.
+Separate methods are provided now to set default User Attributes. eg: EmailID, User Name etc.
+
+v3.2.2
+Fixed a bug where SDK was not able to find MOInbox.storyboard while using MoEngage-iOS-SDK as framework(by defining use_framework! in pod file)
+InApp changes to handle Notification Permission/Setting Permission Actions more efficiently.
+
 v3.2.0
-Enabled tracking of push delivery using Notification Extension and AppGroups.
+Enabled tracking of push delivery using Notification Extension and AppGroups - http://docs.moengage.com/docs/push-delivery-tracking
 Enabled Test InApp from push when push is received in foreground. 
 Check in SDK to prevent getting multiple UPDATE events.
 Inbox module changes to get media-attachment sent in case of iOS Rich Notifications.
@@ -23,7 +55,7 @@ Fixed a bug where InApp was shown even when the keyboard was over the screen.
 Improved logging mechanism, which will help in debugging any issue which arises.
 
 v3.0.0
-Supports iOS10 changes for Notifications. 
+Supports iOS10 changes for Notifications - http://docs.moengage.com/docs/ios-10-rich-notifications
 Makes use of UserNotifications framework for iOS10. 
 Registration for push is handled in SDK now.
 
@@ -50,7 +82,8 @@ v2.3.1
 Bug Fixes for event tracking through inApps and saving data on failure to sync with server.
 
 v2.3
-We now have two separate methods for initializing the SDK with your App ID, this is for differentiating test devices which runs in DEBUG mode with production build in AppStore which runs in RELEASE mode. Refer the following link for more details : http://docs.moengage.com/docs/ios-app-delegate-changes 
+
+We now have two separate methods for initializing the SDK with your App ID, this is for differentiating test devices which runs in DEBUG mode with production build in AppStore which runs in RELEASE mode. Refer the following link for more details : http://docs.moengage.com/docs/appdelegate-changes#section-initializing-moengage-sdk 
 
 v2.2
 Notification can now have categories for action buttons - http://docs.moengage.com/docs/actionable-notifications

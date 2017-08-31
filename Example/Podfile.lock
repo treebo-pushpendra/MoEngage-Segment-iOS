@@ -1,11 +1,11 @@
 PODS:
-  - Analytics (3.5.5)
-  - Expecta (1.0.5)
-  - MoEngage-iOS-SDK (3.2.1)
-  - Segment-MoEngage (2.1.0):
+  - Analytics (3.6.7)
+  - Expecta (1.0.6)
+  - MoEngage-iOS-SDK (3.5.0)
+  - Segment-MoEngage (3.0.0):
     - Analytics (~> 3.0)
-    - MoEngage-iOS-SDK (~> 3.0)
-  - Specta (1.0.5)
+    - MoEngage-iOS-SDK (< 4.0, >= 3.4)
+  - Specta (1.0.6)
 
 DEPENDENCIES:
   - Expecta
@@ -17,12 +17,12 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  Analytics: af1da699765b652112483847ea73ad7c6adbd0e9
-  Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
-  MoEngage-iOS-SDK: 750890fa7363c52c77b515cb088872c9d37a1460
-  Segment-MoEngage: 770be563e32826140eb3f5cd1935bd575d766bdf
-  Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
+  Analytics: 2c09a50e3478a3a7ced08a22d00c43ba6f7011e6
+  Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
+  MoEngage-iOS-SDK: fcf6b17cdc0d71da16fd8f184ff7105a269d54c6
+  Segment-MoEngage: 4ecbda04fd83c3c60a6650ddb75a56bfaa4e8df9
+  Specta: f506f3a8361de16bc0dcf3b17b75e269072ba465
 
 PODFILE CHECKSUM: ff1d1482b57e1909ab1b5a02839cc0f45f00ed7b
 
-COCOAPODS: 1.1.1
+COCOAPODS: 1.2.0

@@ -38,7 +38,7 @@
 
 + (UIViewController *)seg_topViewController
 {
-    UIViewController *root = [UIApplication sharedApplication].delegate.window.rootViewController;
+    UIViewController *root = [[SEGAnalytics sharedAnalytics] configuration].application.delegate.window.rootViewController;
     return [self seg_topViewController:root];
 }
 
@@ -59,7 +59,7 @@
 
 - (void)seg_viewDidAppear:(BOOL)animated
 {
-    UIViewController *top = [UIViewController seg_topViewController];
+    UIViewController *top = [[self class] seg_topViewController];
     if (!top) {
         SEGLog(@"Could not infer screen.");
         return;
