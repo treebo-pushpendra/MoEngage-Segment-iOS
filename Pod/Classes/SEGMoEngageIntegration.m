@@ -20,8 +20,6 @@
                 [[MoEngage sharedInstance] initializeProdWithApiKey:apiKey inApplication:[UIApplication sharedApplication] withLaunchOptions:nil openDeeplinkUrlAutomatically:YES];
             #endif
         });
-        
-        
     }
     return self;
 }
@@ -61,11 +59,11 @@
 {
     NSDictionary *moengagePayloadDict = [payload.traits copy];
     
-    if (payload.anonymousId.length) {
+    if (payload.anonymousId != nil) {
         [[MoEngage sharedInstance] setUserAttribute:payload.anonymousId forKey:SegmentAnonymousIDAttribute];
     }
     
-    if(payload.userId.length){
+    if(payload.userId != nil){
         [[MoEngage sharedInstance] setUserAttribute:payload.userId forKey:USER_ATTRIBUTE_UNIQUE_ID];
     }
     
