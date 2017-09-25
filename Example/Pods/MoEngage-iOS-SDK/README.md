@@ -1,7 +1,7 @@
 # MoEngage-iOS-SDK
 MoEngage iOS SDK
 
-The best way to install is via Cocoapods. Add the following line to your podfile.
+The best way to install is via CocoaPods. Add the following line to your podfile.
 
 pod 'MoEngage-iOS-SDK'
 
@@ -12,6 +12,10 @@ To update, simply run pod update
 For more information about the SDK and manual installation, go to the following link --> http://docs.moengage.com/docs/sdk-integration
 
 Change log:
+
+v3.6.0
+Inbox messages will have an expiry value, based on which it will be deleted from User Inbox. By default the value will be set to 30 days.
+Locale tracking won't be done by default in the SDK, instead trackLocale: method has to be called to track user locale settings.(https://docs.moengage.com/v1.0/docs/tracking-user-attributes#section-tracking-user-locale)
 
 v3.5.0
 Optimized SDK Network calls.
