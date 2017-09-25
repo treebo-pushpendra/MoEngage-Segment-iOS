@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "Segment-MoEngage"
-  s.version          = "3.1.0"
+  s.version          = "3.1.1"
   s.summary          = "MoEngage Integration for Segment's analytics-ios library."
 
   s.description      = <<-DESC
