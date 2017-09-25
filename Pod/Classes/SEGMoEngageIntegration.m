@@ -11,14 +11,16 @@
 - (id)initWithSettings:(NSDictionary *)settings
 {
     if (self = [super init]) {
-        self.settings = settings;
-
-        NSString *apiKey = [self.settings objectForKey:@"apiKey"];
-        #ifdef DEBUG
-            [[MoEngage sharedInstance] initializeDevWithApiKey:apiKey inApplication:[UIApplication sharedApplication] withLaunchOptions:nil openDeeplinkUrlAutomatically:YES];
-        #else
-            [[MoEngage sharedInstance] initializeProdWithApiKey:apiKey inApplication:[UIApplication sharedApplication] withLaunchOptions:nil openDeeplinkUrlAutomatically:YES];
-        #endif
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.settings = settings;
+            NSString *apiKey = [self.settings objectForKey:@"apiKey"];
+            #ifdef DEBUG
+                [[MoEngage sharedInstance] initializeDevWithApiKey:apiKey inApplication:[UIApplication sharedApplication] withLaunchOptions:nil openDeeplinkUrlAutomatically:YES];
+            #else
+                [[MoEngage sharedInstance] initializeProdWithApiKey:apiKey inApplication:[UIApplication sharedApplication] withLaunchOptions:nil openDeeplinkUrlAutomatically:YES];
+            #endif
+        });
+        
         
     }
     return self;
@@ -59,17 +61,19 @@
 {
     NSDictionary *moengagePayloadDict = [payload.traits copy];
     
+    if (payload.anonymousId.length) {
+        [[MoEngage sharedInstance] setUserAttribute:payload.anonymousId forKey:SegmentAnonymousIDAttribute];
+    }
+    
+    if(payload.userId.length){
+        [[MoEngage sharedInstance] setUserAttribute:payload.userId forKey:USER_ATTRIBUTE_UNIQUE_ID];
+    }
+    
     NSMutableDictionary *traits = [NSMutableDictionary dictionaryWithDictionary:moengagePayloadDict];
     if(![traits count]){
         return;
     }
-    
-    if (payload.anonymousId.length) {
-        [[MoEngage sharedInstance] setUserAttribute:payload.anonymousId forKey:SegmentAnonymousIDAttribute];
-    }
-    if(payload.userId.length){
-        [[MoEngage sharedInstance] setUserAttribute:payload.userId forKey:USER_ATTRIBUTE_UNIQUE_ID];
-    }
+
     if ([traits objectForKey:@"id"]) {
         [[MoEngage sharedInstance] setUserAttribute:[traits objectForKey:@"id"] forKey:USER_ATTRIBUTE_UNIQUE_ID];
         [traits removeObjectForKey:@"id"];
