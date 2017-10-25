@@ -1,4 +1,4 @@
-# Analytics
+# MoEngage-Segment-iOS
 
 [![Version](https://img.shields.io/cocoapods/v/Segment-MoEngage.svg?style=flat)](http://cocoapods.org/pods/Segment-MoEngage)
 [![License](https://img.shields.io/cocoapods/l/Segment-MoEngage.svg?style=flat)](http://cocoapods.org/pods/Segment-MoEngage)
@@ -159,4 +159,9 @@ In-App Messaging are custom views which you can send to a segment of users to sh
 ## Segment Docs:
 For more info on using **Segment for iOS** refer to [**Developer Docs**](https://segment.com/docs/sources/mobile/ios/) provided by Segment.
   
+## Change Log
+See [SDK Change Log](https://github.com/moengage/MoEngage-Segment-iOS/blob/master/CHANGELOG.md) for information on every released version.
 
+## Support
+Please visit this repository's [Github issue tracker](https://github.com/moengage/MoEngage-Segment-iOS/issues) for bug reports specific to our iOS SDK.
+For other issues and support please contact MoEngage support from your dashboard.
