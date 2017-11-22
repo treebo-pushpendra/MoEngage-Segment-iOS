@@ -7,7 +7,7 @@
 //
 
 #import "SEGViewController.h"
-
+#import <Analytics/SEGAnalytics.h>
 
 @interface SEGViewController ()
 
@@ -19,6 +19,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [[SEGAnalytics sharedAnalytics] identify:@"UniqueID" traits:nil];
     // Do any additional setup after loading the view, typically from a nib.
 }
 

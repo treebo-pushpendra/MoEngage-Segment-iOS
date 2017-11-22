@@ -20,7 +20,6 @@
     configuration.trackApplicationLifecycleEvents = YES; // Enable this to record certain application events automatically!
     configuration.recordScreenViews = YES; // Enable this to record screen views automatically!
     [SEGAnalytics setupWithConfiguration:configuration];
-    [[SEGAnalytics sharedAnalytics] identify:@"qaz" traits:nil];
     return YES;
 }
 
