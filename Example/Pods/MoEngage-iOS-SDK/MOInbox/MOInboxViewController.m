@@ -3,7 +3,7 @@
 //  MoEngage
 //
 //  Created by Gautam on 26/02/15.
-//  Copyright (c) 2015 alphadevs. All rights reserved.
+//  Copyright (c) 2015 MoEngage Inc. All rights reserved.
 //
 
 #import "MOInboxViewController.h"
@@ -129,7 +129,7 @@ static NSInteger const MOInboxTableHeightConst = 30;
         }
         return 0;
     } @catch (NSException *exception) {
-        NSLog(@"Exception : %@",exception);
+        NSLog(@"MoEngage - Exception : %@",exception);
         return 0;
     }
     
@@ -150,7 +150,7 @@ static NSInteger const MOInboxTableHeightConst = 30;
         }
         return cell;
     } @catch (NSException *exception) {
-        NSLog(@"Exception : %@",exception);
+        NSLog(@"MoEngage - Exception : %@",exception);
         return nil;
     }
 }
@@ -158,22 +158,27 @@ static NSInteger const MOInboxTableHeightConst = 30;
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
     @try {
-        MOInboxPushDataModel *dictionary = [[MOInboxPushDataModel alloc]initWithDictionary:[_inboxMessagesArray objectAtIndex:indexPath.row]];
-        if(!dictionary.isRead){
-            NSMutableDictionary *newDict = [NSMutableDictionary dictionaryWithDictionary:[_inboxMessagesArray objectAtIndex:indexPath.row]];
-            [newDict setObject:@YES forKey:MO_EXP_PUSH_IS_READ];
-            [_inboxMessagesArray replaceObjectAtIndex:indexPath.row withObject:newDict];
-            
-            NSArray *tempArray = [[_inboxMessagesArray reverseObjectEnumerator]allObjects];
-            [MOInbox writeArrayToFile:[NSMutableArray arrayWithArray:tempArray]];
-            [tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+        NSDictionary* msg = [self.inboxMessagesArray objectAtIndex:indexPath.row];
+        MOInboxPushDataModel *pushDataObj = [[MOInboxPushDataModel alloc] initWithDictionary:[msg mutableCopy]];
+        
+        if (!pushDataObj.isRead){
+            [MOInbox trackInboxNotificationClickForCampaign:pushDataObj andIsFirstClick:true];
+            NSMutableDictionary* updatedDict = [MOInbox markNotificationReadWithCampaignID:pushDataObj.campaignID];
+            if (updatedDict != nil){
+                [self.inboxMessagesArray replaceObjectAtIndex:indexPath.row withObject:updatedDict];
+                [tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            }
         }
+        else{
+            [MOInbox trackInboxNotificationClickForCampaign:pushDataObj andIsFirstClick:false];
+        }
+        
         if ([self.delegate respondsToSelector:@selector(inboxCellSelectedWithData:)]) {
-            [self.delegate inboxCellSelectedWithData:dictionary.extraData];
+            [self.delegate inboxCellSelectedWithData:pushDataObj.extraData];
         }
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
     } @catch (NSException *exception) {
-        NSLog(@"Exception : %@",exception);
+        NSLog(@"MoEngage - Exception : %@",exception);
     }
 }
 

@@ -1,6 +1,7 @@
 #import "SEGMoEngageIntegration.h"
 #import "MoEngage.h"
 #import "MOEHelperConstants.h"
+#import "SEGAnalytics.h"
 
 #define SegmentAnonymousIDAttribute @"USER_ATTRIBUTE_SEGMENT_ID"
 
@@ -19,6 +20,12 @@
             #else
                 [[MoEngage sharedInstance] initializeProdWithApiKey:apiKey inApplication:[UIApplication sharedApplication] withLaunchOptions:nil openDeeplinkUrlAutomatically:YES];
             #endif
+            
+            NSString* segmentAnonymousID = [[SEGAnalytics sharedAnalytics] getAnonymousId];
+            if(segmentAnonymousID != nil){
+                NSLog(@"Anonymous ID :  %@",segmentAnonymousID);
+                [[MoEngage sharedInstance] setUserAttribute:segmentAnonymousID forKey:SegmentAnonymousIDAttribute];
+            }
         });
     }
     return self;
@@ -51,6 +58,10 @@
 - (void)receivedRemoteNotification:(NSDictionary *)userInfo
 {
     [[MoEngage sharedInstance] didReceieveNotificationinApplication:[UIApplication sharedApplication] withInfo:userInfo openDeeplinkUrlAutomatically:YES];
+}
+
+- (void)handleActionWithIdentifier:(NSString *)identifier forRemoteNotification:(NSDictionary *)userInfo{
+    [[MoEngage sharedInstance] handleActionWithIdentifier:identifier forRemoteNotification:userInfo];
 }
 
 #pragma mark- Segment callback methods
@@ -136,6 +147,20 @@
     }
 }
 
+-(void)alias:(SEGAliasPayload *)payload{
+    @try{
+        id newID = payload.theNewId;
+        if (newID != nil){
+            if ([[MoEngage sharedInstance] respondsToSelector:@selector(setAlias:)]){
+                [[MoEngage sharedInstance] setAlias:newID];
+            }
+        }
+    }
+    @catch(NSException *exception) {
+        NSLog(@"Segment - MoEngage - Exception while setAlias is %@", exception);
+    }
+}
+
 - (void)track:(SEGTrackPayload *)payload
 {
     [[MoEngage sharedInstance] trackEvent:payload.event andPayload:[NSMutableDictionary dictionaryWithDictionary:payload.properties]];
@@ -151,5 +176,4 @@
 {
     [[MoEngage sharedInstance] resetUser];
 }
-
 @end
