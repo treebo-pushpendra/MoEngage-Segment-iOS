@@ -4,6 +4,7 @@
 #import "SEGAnalytics.h"
 
 #define SegmentAnonymousIDAttribute @"USER_ATTRIBUTE_SEGMENT_ID"
+#define SegmentMoEngageVersion @"3.2.2"
 
 @implementation SEGMoEngageIntegration
 
@@ -15,6 +16,8 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             self.settings = settings;
             NSString *apiKey = [self.settings objectForKey:@"apiKey"];
+            [[NSUserDefaults standardUserDefaults] setObject:SegmentMoEngageVersion forKey:MoEngage_Segment_SDK_Version];
+            
             #ifdef DEBUG
                 [[MoEngage sharedInstance] initializeDevWithApiKey:apiKey inApplication:[UIApplication sharedApplication] withLaunchOptions:nil openDeeplinkUrlAutomatically:YES];
             #else

@@ -20,6 +20,7 @@
 {
     [super viewDidLoad];
     [[SEGAnalytics sharedAnalytics] identify:@"UniqueID" traits:nil];
+    [[SEGAnalytics sharedAnalytics] identify:@"UniqueID" traits:@{@"email":@"qwe@qaz.com"}];
     // Do any additional setup after loading the view, typically from a nib.
 }
 

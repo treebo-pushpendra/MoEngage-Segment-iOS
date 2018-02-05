@@ -1,6 +1,10 @@
 Change Log
 ==========
 
+Version 3.2.1 *(22nd November, 2017)*
+-------------------------------------------
+* Have set the Minimum SDK Version of MoEngage-iOS-SDK to 3.8.0.
+
 Version 3.2.0 *(22nd November, 2017)*
 -------------------------------------------
 * Implemented alias callback to call MoEngage SDKs `setAlias:` method to update USER_ATTRIBUTE_UNIQUE_ID
