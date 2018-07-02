@@ -65,6 +65,7 @@
 		6F681491A39B803A234A5FC4 /* Pods-Segment-MoEngage_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Segment-MoEngage_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Segment-MoEngage_Tests/Pods-Segment-MoEngage_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		7E7BE304D3E29EE21A214E88 /* Segment-MoEngage.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = "Segment-MoEngage.podspec"; path = "../Segment-MoEngage.podspec"; sourceTree = "<group>"; };
 		873B8AEA1B1F5CCA007FD442 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		AF82D75F20EA302C00E25E02 /* Segment-MoEngage_Example.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Segment-MoEngage_Example.entitlements"; sourceTree = "<group>"; };
 		AFCF52F11DF2BA2700BC87E5 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E29EFD9B38521AB94A058F0F /* Pods-Segment-MoEngage_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Segment-MoEngage_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-Segment-MoEngage_Example/Pods-Segment-MoEngage_Example.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -98,6 +99,7 @@
 		6003F581195388D10070C39A = {
 			isa = PBXGroup;
 			children = (
+				AF82D75F20EA302C00E25E02 /* Segment-MoEngage_Example.entitlements */,
 				60FF7A9C1954A5C5007DD14C /* Podspec Metadata */,
 				6003F593195388D20070C39A /* Example for Segment-MoEngage */,
 				6003F5B5195388D20070C39A /* Tests */,
@@ -208,7 +210,6 @@
 				6003F587195388D20070C39A /* Frameworks */,
 				6003F588195388D20070C39A /* Resources */,
 				179CB62638D55981E3360A96 /* [CP] Embed Pods Frameworks */,
-				94A523B3CA068164DCB65408 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -227,8 +228,6 @@
 				6003F5AA195388D20070C39A /* Sources */,
 				6003F5AB195388D20070C39A /* Frameworks */,
 				6003F5AC195388D20070C39A /* Resources */,
-				CA12D4D5CAC6F124BE1BA614 /* [CP] Embed Pods Frameworks */,
-				E73DF3FA85ED90BA4EDCB8E3 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -252,6 +251,11 @@
 				TargetAttributes = {
 					6003F589195388D20070C39A = {
 						DevelopmentTeam = BPWYRAF5X7;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 					6003F5AD195388D20070C39A = {
 						TestTargetID = 6003F589195388D20070C39A;
@@ -306,9 +310,12 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Segment-MoEngage_Example/Pods-Segment-MoEngage_Example-frameworks.sh",
+				"${PODS_ROOT}/MoEngage-iOS-SDK/MoEngage/MoEngage.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MoEngage.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -333,39 +340,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		94A523B3CA068164DCB65408 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-Segment-MoEngage_Example/Pods-Segment-MoEngage_Example-resources.sh",
-				"${PODS_ROOT}/MoEngage-iOS-SDK/MOInbox/MOInbox.storyboard",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Segment-MoEngage_Example/Pods-Segment-MoEngage_Example-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		CA12D4D5CAC6F124BE1BA614 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Segment-MoEngage_Tests/Pods-Segment-MoEngage_Tests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		DA6B15676CE805C7224C8ACF /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -382,21 +356,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		E73DF3FA85ED90BA4EDCB8E3 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Segment-MoEngage_Tests/Pods-Segment-MoEngage_Tests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -527,6 +486,7 @@
 			baseConfigurationReference = 605755C7F7742F90499B9B4A /* Pods-Segment-MoEngage_Example.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "Segment-MoEngage_Example.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEVELOPMENT_TEAM = BPWYRAF5X7;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -544,6 +504,7 @@
 			baseConfigurationReference = E29EFD9B38521AB94A058F0F /* Pods-Segment-MoEngage_Example.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "Segment-MoEngage_Example.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEVELOPMENT_TEAM = BPWYRAF5X7;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;

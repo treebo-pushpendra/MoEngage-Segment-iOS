@@ -1,35 +1,50 @@
 #import "SEGMoEngageIntegration.h"
-#import "MoEngage.h"
-#import "MOEHelperConstants.h"
+#import <MoEngage/MoEngage.h>
 #import "SEGAnalytics.h"
 
 #define SegmentAnonymousIDAttribute @"USER_ATTRIBUTE_SEGMENT_ID"
-#define SegmentMoEngageVersion @"3.2.2"
+#define SegmentMoEngageVersion @"3.3.0"
 
 @implementation SEGMoEngageIntegration
 
++(NSDate*)dateFromISOdateStr:(NSString*)isoDateStr{
+    if (isoDateStr != nil) {
+        static NSDateFormatter *dateFormatter;
+        static dispatch_once_t onceToken;
+        dispatch_once(&onceToken, ^{
+            dateFormatter = [[NSDateFormatter alloc] init];
+            dateFormatter.locale = [NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"];
+            dateFormatter.dateFormat = @"yyyy'-'MM'-'dd'T'HH':'mm':'ss.SSS'Z'";
+            dateFormatter.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
+        });
+        return [dateFormatter dateFromString:isoDateStr];
+    }
+    return nil;
+}
+
 #pragma mark- Initialization method
 
-- (id)initWithSettings:(NSDictionary *)settings
+-(id)initWithSettings:(NSDictionary *)settings
 {
     if (self = [super init]) {
         dispatch_async(dispatch_get_main_queue(), ^{
             self.settings = settings;
             NSString *apiKey = [self.settings objectForKey:@"apiKey"];
-            [[NSUserDefaults standardUserDefaults] setObject:SegmentMoEngageVersion forKey:MoEngage_Segment_SDK_Version];
             
-            #ifdef DEBUG
-                [[MoEngage sharedInstance] initializeDevWithApiKey:apiKey inApplication:[UIApplication sharedApplication] withLaunchOptions:nil openDeeplinkUrlAutomatically:YES];
-            #else
-                [[MoEngage sharedInstance] initializeProdWithApiKey:apiKey inApplication:[UIApplication sharedApplication] withLaunchOptions:nil openDeeplinkUrlAutomatically:YES];
-            #endif
-            
-            NSString* segmentAnonymousID = [[SEGAnalytics sharedAnalytics] getAnonymousId];
-            if(segmentAnonymousID != nil){
-                NSLog(@"Anonymous ID :  %@",segmentAnonymousID);
-                [[MoEngage sharedInstance] setUserAttribute:segmentAnonymousID forKey:SegmentAnonymousIDAttribute];
-            }
+#ifdef DEBUG
+            [[MoEngage sharedInstance] initializeDevWithApiKey:apiKey inApplication:[UIApplication sharedApplication] withLaunchOptions:nil openDeeplinkUrlAutomatically:YES];
+#else
+            [[MoEngage sharedInstance] initializeProdWithApiKey:apiKey inApplication:[UIApplication sharedApplication] withLaunchOptions:nil openDeeplinkUrlAutomatically:YES];
+#endif
         });
+        
+        NSString* segmentAnonymousID = [[SEGAnalytics sharedAnalytics] getAnonymousId];
+        if(segmentAnonymousID != nil){
+            NSLog(@"Anonymous ID :  %@",segmentAnonymousID);
+            [[MoEngage sharedInstance] setUserAttribute:segmentAnonymousID forKey:SegmentAnonymousIDAttribute];
+        }
+        [[NSUserDefaults standardUserDefaults] setObject:SegmentMoEngageVersion forKey:MoEngage_Segment_SDK_Version];
+        [[NSUserDefaults standardUserDefaults] synchronize];
     }
     return self;
 }
@@ -44,13 +59,8 @@
 
 #pragma mark- Push Notification methods
 
-- (void)registerForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken options:(NSDictionary *)options
-{
-    [[MoEngage sharedInstance] registerForPush:deviceToken];
-}
-
 -(void)registeredForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken{
-    [[MoEngage sharedInstance] registerForPush:deviceToken];
+    [[MoEngage sharedInstance] setPushToken:deviceToken];
 }
 
 - (void)failedToRegisterForRemoteNotificationsWithError:(NSError *)error
@@ -71,72 +81,71 @@
 
 - (void)identify:(SEGIdentifyPayload *)payload
 {
-    NSDictionary *moengagePayloadDict = [payload.traits copy];
-    
-    if (payload.anonymousId != nil) {
-        [[MoEngage sharedInstance] setUserAttribute:payload.anonymousId forKey:SegmentAnonymousIDAttribute];
-    }
-    
-    if(payload.userId != nil){
-        [[MoEngage sharedInstance] setUserAttribute:payload.userId forKey:USER_ATTRIBUTE_UNIQUE_ID];
-    }
-    
-    NSMutableDictionary *traits = [NSMutableDictionary dictionaryWithDictionary:moengagePayloadDict];
-    if(![traits count]){
-        return;
-    }
-
-    if ([traits objectForKey:@"id"]) {
-        [[MoEngage sharedInstance] setUserAttribute:[traits objectForKey:@"id"] forKey:USER_ATTRIBUTE_UNIQUE_ID];
-        [traits removeObjectForKey:@"id"];
-    }
-    
-    if ([traits objectForKey:@"email"]) {
-        [[MoEngage sharedInstance] setUserAttribute:[traits objectForKey:@"email"] forKey:USER_ATTRIBUTE_USER_EMAIL];
-        [traits removeObjectForKey:@"email"];
-    }
-    
-    if ([traits objectForKey:@"name"]) {
-        [[MoEngage sharedInstance] setUserAttribute:[traits objectForKey:@"name"] forKey:USER_ATTRIBUTE_USER_NAME];
-        [traits removeObjectForKey:@"name"];
-    }
-    
-    if ([traits objectForKey:@"phone"]) {
-        [[MoEngage sharedInstance] setUserAttribute:[traits objectForKey:@"phone"] forKey:USER_ATTRIBUTE_USER_MOBILE];
-        [traits removeObjectForKey:@"phone"];
-    }
-    
-    if ([traits objectForKey:@"firstName"]) {
-        [[MoEngage sharedInstance] setUserAttribute:[traits objectForKey:@"firstName"] forKey:USER_ATTRIBUTE_USER_FIRST_NAME];
-        [traits removeObjectForKey:@"firstName"];
-    }
-    
-    if ([traits objectForKey:@"lastName"]) {
-        [[MoEngage sharedInstance] setUserAttribute:[traits objectForKey:@"lastName"] forKey:USER_ATTRIBUTE_USER_LAST_NAME];
-        [traits removeObjectForKey:@"lastName"];
-    }
-    
-    if ([traits objectForKey:@"gender"]) {
-        [[MoEngage sharedInstance] setUserAttribute:[traits objectForKey:@"gender"] forKey:USER_ATTRIBUTE_USER_GENDER];
-        [traits removeObjectForKey:@"gender"];
-    }
-    
-    if ([traits objectForKey:@"birthday"]) {
-        [[MoEngage sharedInstance] setUserAttribute:[traits objectForKey:@"birthday"] forKey:USER_ATTRIBUTE_USER_BDAY];
-        [traits removeObjectForKey:@"birthday"];
-    }
-    
-    if ([traits objectForKey:@"address"]) {
-        [[MoEngage sharedInstance] setUserAttribute:[traits objectForKey:@"address"] forKey:@"address"];
-        [traits removeObjectForKey:@"address"];
-    }
-    
-    if ([traits objectForKey:@"age"]) {
-        [[MoEngage sharedInstance] setUserAttribute:[traits objectForKey:@"age"] forKey:@"age"];
-        [traits removeObjectForKey:@"age"];
-    }
-    
     @try {
+        NSDictionary *moengagePayloadDict = [payload.traits copy];
+        
+        if (payload.anonymousId != nil) {
+            [[MoEngage sharedInstance] setUserAttribute:payload.anonymousId forKey:SegmentAnonymousIDAttribute];
+        }
+        
+        if(payload.userId != nil){
+            [[MoEngage sharedInstance] setUserAttribute:payload.userId forKey:USER_ATTRIBUTE_UNIQUE_ID];
+        }
+        
+        NSMutableDictionary *traits = [NSMutableDictionary dictionaryWithDictionary:moengagePayloadDict];
+        if(![traits count]){
+            return;
+        }
+        
+        if ([traits objectForKey:@"id"]) {
+            [[MoEngage sharedInstance] setUserAttribute:[traits objectForKey:@"id"] forKey:USER_ATTRIBUTE_UNIQUE_ID];
+            [traits removeObjectForKey:@"id"];
+        }
+        
+        if ([traits objectForKey:@"email"]) {
+            [[MoEngage sharedInstance] setUserAttribute:[traits objectForKey:@"email"] forKey:USER_ATTRIBUTE_USER_EMAIL];
+            [traits removeObjectForKey:@"email"];
+        }
+        
+        if ([traits objectForKey:@"name"]) {
+            [[MoEngage sharedInstance] setUserAttribute:[traits objectForKey:@"name"] forKey:USER_ATTRIBUTE_USER_NAME];
+            [traits removeObjectForKey:@"name"];
+        }
+        
+        if ([traits objectForKey:@"phone"]) {
+            [[MoEngage sharedInstance] setUserAttribute:[traits objectForKey:@"phone"] forKey:USER_ATTRIBUTE_USER_MOBILE];
+            [traits removeObjectForKey:@"phone"];
+        }
+        
+        if ([traits objectForKey:@"firstName"]) {
+            [[MoEngage sharedInstance] setUserAttribute:[traits objectForKey:@"firstName"] forKey:USER_ATTRIBUTE_USER_FIRST_NAME];
+            [traits removeObjectForKey:@"firstName"];
+        }
+        
+        if ([traits objectForKey:@"lastName"]) {
+            [[MoEngage sharedInstance] setUserAttribute:[traits objectForKey:@"lastName"] forKey:USER_ATTRIBUTE_USER_LAST_NAME];
+            [traits removeObjectForKey:@"lastName"];
+        }
+        
+        if ([traits objectForKey:@"gender"]) {
+            [[MoEngage sharedInstance] setUserAttribute:[traits objectForKey:@"gender"] forKey:USER_ATTRIBUTE_USER_GENDER];
+            [traits removeObjectForKey:@"gender"];
+        }
+        
+        if ([traits objectForKey:@"birthday"]) {
+            [[MoEngage sharedInstance] setUserAttribute:[traits objectForKey:@"birthday"] forKey:USER_ATTRIBUTE_USER_BDAY];
+            [traits removeObjectForKey:@"birthday"];
+        }
+        
+        if ([traits objectForKey:@"address"]) {
+            [[MoEngage sharedInstance] setUserAttribute:[traits objectForKey:@"address"] forKey:@"address"];
+            [traits removeObjectForKey:@"address"];
+        }
+        
+        if ([traits objectForKey:@"age"]) {
+            [[MoEngage sharedInstance] setUserAttribute:[traits objectForKey:@"age"] forKey:@"age"];
+            [traits removeObjectForKey:@"age"];
+        }
         for (NSString *key in [traits allKeys]) {
             id value = [traits objectForKey:key];
             if (value != nil){
@@ -166,8 +175,38 @@
 
 - (void)track:(SEGTrackPayload *)payload
 {
-    [[MoEngage sharedInstance] trackEvent:payload.event andPayload:[NSMutableDictionary dictionaryWithDictionary:payload.properties]];
+    @try{
+        if (payload.properties != nil) {
+            MOPayloadBuilder* moe_payload = [[MOPayloadBuilder alloc] init];
+            NSMutableDictionary* finalTrackDict = [NSMutableDictionary dictionaryWithDictionary:payload.properties];
+            
+            for (NSString* key in payload.properties.allKeys) {
+                id val = [payload.properties valueForKey:key];
+                if (val == nil || val == [NSNull null]) {
+                    continue;
+                }
+                else if ([val isKindOfClass:[NSString class]]){
+                    NSDate* converted_date = [SEGMoEngageIntegration dateFromISOdateStr:val];
+                    if (converted_date != nil) {
+                        [moe_payload setDate:converted_date forKey:key];
+                        [finalTrackDict removeObjectForKey:key];
+                    }
+                }
+            }
+            
+            moe_payload.eventDict = finalTrackDict;
+            [[MoEngage sharedInstance] trackEvent:payload.event builderPayload:moe_payload];
+        }
+        else{
+            [[MoEngage sharedInstance] trackEvent:payload.event andPayload:nil];
+        }
+    }
+    @catch(NSException* exception){
+        NSLog(@"Segment - MoEngage - Exception while Tracking Event : %@", exception);
+    }
 }
+
+
 
 - (void)flush
 {
