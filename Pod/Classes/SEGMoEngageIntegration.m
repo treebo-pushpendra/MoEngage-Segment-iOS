@@ -98,22 +98,22 @@
         }
         
         if ([traits objectForKey:@"id"]) {
-            [[MoEngage sharedInstance] setUserAttribute:[traits objectForKey:@"id"] forKey:USER_ATTRIBUTE_UNIQUE_ID];
+            [[MoEngage sharedInstance] setUserUniqueID:[traits objectForKey:@"id"]];
             [traits removeObjectForKey:@"id"];
         }
         
         if ([traits objectForKey:@"email"]) {
-            [[MoEngage sharedInstance] setUserAttribute:[traits objectForKey:@"email"] forKey:USER_ATTRIBUTE_USER_EMAIL];
+            [[MoEngage sharedInstance] setUserEmailID:[traits objectForKey:@"email"]];
             [traits removeObjectForKey:@"email"];
         }
         
         if ([traits objectForKey:@"name"]) {
-            [[MoEngage sharedInstance] setUserAttribute:[traits objectForKey:@"name"] forKey:USER_ATTRIBUTE_USER_NAME];
+            [[MoEngage sharedInstance] setUserName:[traits objectForKey:@"name"]];
             [traits removeObjectForKey:@"name"];
         }
         
         if ([traits objectForKey:@"phone"]) {
-            [[MoEngage sharedInstance] setUserAttribute:[traits objectForKey:@"phone"] forKey:USER_ATTRIBUTE_USER_MOBILE];
+            [[MoEngage sharedInstance] setUserMobileNo:[traits objectForKey:@"phone"]];
             [traits removeObjectForKey:@"phone"];
         }
         
@@ -123,7 +123,7 @@
         }
         
         if ([traits objectForKey:@"lastName"]) {
-            [[MoEngage sharedInstance] setUserAttribute:[traits objectForKey:@"lastName"] forKey:USER_ATTRIBUTE_USER_LAST_NAME];
+            [[MoEngage sharedInstance] setUserLastName:[traits objectForKey:@"lastName"]];
             [traits removeObjectForKey:@"lastName"];
         }
         
@@ -133,7 +133,10 @@
         }
         
         if ([traits objectForKey:@"birthday"]) {
-            [[MoEngage sharedInstance] setUserAttribute:[traits objectForKey:@"birthday"] forKey:USER_ATTRIBUTE_USER_BDAY];
+            id birthdayVal = [traits objectForKey:@"birthday"];
+            if (birthdayVal != nil){
+                [self identifyDateUserAttribute:birthdayVal withKey:USER_ATTRIBUTE_USER_BDAY];
+            }
             [traits removeObjectForKey:@"birthday"];
         }
         
@@ -149,7 +152,7 @@
         for (NSString *key in [traits allKeys]) {
             id value = [traits objectForKey:key];
             if (value != nil){
-                [[MoEngage sharedInstance] setUserAttribute:value forKey:key];
+                [self identifyDateUserAttribute:value withKey:key];
             }
         }
     }
@@ -157,6 +160,17 @@
         // Possible if value is an unsupported type in the dictionary
         NSLog(@"Segment - MoEngage - Exception while adding traits is %@", exception);
     }
+}
+
+-(void)identifyDateUserAttribute:(id)value withKey:(NSString*)attr_name{
+    if ([value isKindOfClass:[NSString class]]) {
+        NSDate* converted_date = [SEGMoEngageIntegration dateFromISOdateStr:value];
+        if (converted_date != nil) {
+            [[MoEngage sharedInstance] setUserAttributeTimestamp:[converted_date timeIntervalSince1970] forKey:attr_name];
+            return;
+        }
+    }
+    [[MoEngage sharedInstance] setUserAttribute:value forKey:attr_name];
 }
 
 -(void)alias:(SEGAliasPayload *)payload{

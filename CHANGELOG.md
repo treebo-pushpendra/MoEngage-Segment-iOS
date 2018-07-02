@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+Version 3.3.0 *(4th July, 2018)*
+-------------------------------------------
+* Have set the MoEngage SDK Dependency to 4.0 and above.
+* Support for date event attributes.
+* Support for date user attributes.
+
 Version 3.2.1 *(22nd November, 2017)*
 -------------------------------------------
 * Have set the Minimum SDK Version of MoEngage-iOS-SDK to 3.8.0.
