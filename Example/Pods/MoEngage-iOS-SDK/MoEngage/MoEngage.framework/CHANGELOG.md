@@ -3,10 +3,45 @@
 
 ## Change Log:
 
+### Version 4.3.0  *(10th October, 2018)*
+-------------------------------------------
+* Geofence Module Separated from the Core SDK. Refer to the [docs](https://docs.moengage.com/docs/geofences) for more info.
+
+### Version 4.2.4  *(4th October, 2018)*
+-------------------------------------------
+* Bug Fix: Universal links when sent as deep links were not working.
+
+### Version 4.2.3  *(13th August, 2018)*
+-------------------------------------------
+* Real-time Trigger Campaigns Bug Fix : Wrong push notification payload was posted in offline scenarios where event personalization was used.
+
+### Version 4.2.2  *(26th July, 2018)*
+-------------------------------------------
+* Delegate method `inboxCellSelectedWithPushDict:`  provided for getting Push Notification Payload on clicking notification in SDK inbox.
+* Now for processing inbox notifications clicks the same way as push notification clicks set `shouldProcessNotificationActions` of MOInboxViewController instance to `true`.
+
+### Version 4.2.1  *(10th July, 2018)*
+-------------------------------------------
+* Network request and response caching in Cache.db disabled.
+
+### Version 4.2.0  *(22nd June, 2018)*
+-------------------------------------------
+* Changed routes of sync API calls in SDK.
+
+### Version 4.1.1  *(12th June, 2018)*
+-------------------------------------------
+* App Exit Event being tracked for using Real-time triggers when app goes to background.
+* Real-Time triggers can now also be triggered by events being tracked when app is in background state.
+
+### Version 4.1.0  *(24th May, 2018)*
+-------------------------------------------
+* SDK changes to make it GDPR compliant. We have provided opt-out methods for event tracking, push notifications and inApp Notifications in this release.
+* Provided `resetUserWithCompletionBlock:` and `flushWithCompletionBlock:` methods to provide callbacks once the request is processed.
+
 ### Version 4.0.0  *(23rd April, 2018)*
 -------------------------------------------
 * SDK was changed to dynamic framework
-* Support for Real-Time Triggers added
+* Support for [Real-Time Triggers](https://docs.moengage.com/v1.0/docs/real-time-triggers) added
 
 ### Version 3.9.2  *(14th March, 2018)*
 -------------------------------------------

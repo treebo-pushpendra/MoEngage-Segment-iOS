@@ -26,7 +26,6 @@ FOUNDATION_EXPORT const unsigned char MoEngageVersionString[];
 #import <MoEngage/MOPayloadBuilder.h>
 #import <MoEngage/MOEHelperConstants.h>
 #import <MoEngage/MONotificationCategory.h>
-#import <MoEngage/MOGeoFenceHandler.h>
 
 //Inbox
 #import <MoEngage/MOInbox.h>
@@ -36,17 +35,13 @@ FOUNDATION_EXPORT const unsigned char MoEngageVersionString[];
 #import <MoEngage/MOInboxTableViewCell.h>
 
 
+#import <MoEngage/MOLogger.h>
+#import <MoEngage/MOConfigmanager.h>
+#import <MoEngage/MONetworkInterface.h>
+#import <MoEngage/NSDictionary+MOExtension.h>
+#import <MoEngage/NSMutableDictionary+MOExtension.h>
 
 typedef void(^NudgeCreationCompletionBlock)(UIView * _Nullable nudgeView, NSString* _Nullable campaignID);
-
-/**
- Enumerator to set Log Levels of SDK for Debugging
- */
-typedef enum _LogLevel{
-    LOG_NONE,
-    LOG_ALL,
-    LOG_EXCEPTIONS
-}LogLevel;
 
 /**
  Enumerator to define where to place nudge inApp in the screen
@@ -81,16 +76,6 @@ typedef enum UserGender{
     MALE,
     FEMALE
 }UserGender;
-
-/**
- Enumerator which gives which Region the Data has to be redirected
- @warning Consult with MoEngage team before using this enumerator in the App
- */
-typedef enum DataRedirectionRegion{
-    MOE_REGION_INDIA,
-    MOE_REGION_EU,
-    MOE_REGION_DEFAULT
-}DataRedirectionRegion;
 
 #pragma mark - In App Protocol
 /**
@@ -166,6 +151,30 @@ typedef enum DataRedirectionRegion{
  @warning Make sure initializeProdWithApiKey:inApplication:withLaunchOptions:openDeeplinkUrlAutomatically: method is also implemented, refer this link for more details: [Initializing MoEngage SDK](https://docs.moengage.com/docs/appdelegate-changes#section-initializing-moengage-sdk)
  */
 -(void)initializeProdWithApiKey:(NSString *_Nonnull)apiKey inApplication:(UIApplication *_Nullable)application withLaunchOptions:(NSDictionary *_Nullable)launchOptions openDeeplinkUrlAutomatically:(BOOL)openUrl;
+
+#pragma mark- Opt Out methods
+
+/**
+ Method to opt out of the data tracking for a particular user
+ @param isOptedOut Bool value to indicate if the data tracking is to be opted out
+ @version 4.1.0 and above
+ */
+-(void)optOutOfDataTracking:(BOOL)isOptedOut;
+
+/**
+ Method to opt out of push for a particular user
+ @param isPushOptedOut Bool value to indicate if the push is to be opted out
+ @version 4.1.0 and above
+ */
+-(void)optOutOfMoEngagePushNotification:(BOOL)isPushOptedOut;
+
+/**
+ Method to opt out of the data tracking for a particular user
+ @param isInAppOptedOut Bool value to indicate if the data tracking is to be opted out
+ @version 4.1.0 and above
+ */
+-(void)optOutOfInAppCampaign:(BOOL)isInAppOptedOut;
+
 
 #pragma mark - Push Notifications
 
@@ -441,16 +450,6 @@ typedef enum DataRedirectionRegion{
  */
 -(void)showNudgeViewAtNudgePosition:(NudgePosition)position;
 
-#pragma mark - Geofencing
-/**
- Use this method to start tracking geofences for the current location.
- @param locManager Pass the location manager instance if you have create one. Else, a new one will be created. This param is optional.
- @param location Pass this param if you already have the location of the user or want to hard code a location. Else the location manager will take the current location of the user
- @see MOGeofenceHandler to get completion block
- */
--(void)startGeofencingWithLocationManager:(CLLocationManager* _Nullable)locManager andCurrentLocation:(CLLocation *_Nullable)location;
-
-
 #pragma mark - Utility Methods
 
 /**
@@ -459,9 +458,25 @@ typedef enum DataRedirectionRegion{
 -(void)resetUser;
 
 /**
+ Call this method to clear the unique attributes of the current user, and add him as a new user. One of the use cases is when a user logs out
+ @param completionBlock : Completion block called after the User Reset is done
+ @version 4.1.0 and above
+ */
+-(void)resetUserWithCompletionBlock:(void(^_Nullable)(BOOL userResetSuccessfully))completionBlock;
+
+
+/**
  Use this method to forcefully sync events to server right now. Useful for testing and to send data in realtime when you don't wish to wait for when the user goes to background or terminates the app.
  */
 -(void)syncNow;
+
+/**
+ Use this method to forcefully sync events to server right now. Useful for testing and to send data in realtime when you don't wish to wait for when the user goes to background or terminates the app.
+
+ @param completionBlock : Completion block called after data sync is completed
+ @version 4.1.0 and above
+*/
+-(void)flushWithCompletionBlock:(void(^_Nullable)(BOOL syncSuccessful))completionBlock;
 
 /**
  There is a periodic sync enabled by default in SDK, use this method to disable this periodic sync by SDK
