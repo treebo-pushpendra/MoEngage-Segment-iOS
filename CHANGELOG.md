@@ -1,7 +1,7 @@
 Change Log
 ==========
 
-Version 3.3.0 *(4th July, 2018)*
+Version 3.3.0 *(15th October, 2018)*
 -------------------------------------------
 * Have set the MoEngage SDK Dependency to 4.0 and above.
 * Support for date event attributes.
