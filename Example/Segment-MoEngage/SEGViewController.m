@@ -20,11 +20,14 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [[SEGAnalytics sharedAnalytics] identify:@"UniqueID" traits:nil];
-    [[SEGAnalytics sharedAnalytics] identify:@"UniqueID" traits:@{@"email":@"qwe@qaz.com"}];
-    [[SEGAnalytics sharedAnalytics] identify:@"UniqueID" traits:@{@"test_date":[NSDate date]}];
-
-    [[SEGAnalytics sharedAnalytics] track:@"testEvent" properties:@{@"testDate": [NSDate date], @"testStr": @"0", @"testNum": @100}];
+    
+    [[SEGAnalytics sharedAnalytics] identify:@"UniqueID1" traits:nil];
+    [[SEGAnalytics sharedAnalytics] identify:@"UniqueID1" traits:@{@"email":@"test@moe.com"}];
+    
+    [[SEGAnalytics sharedAnalytics] identify:@"UniqueID1" traits:@{@"test_user_attr":[NSDate date]}];
+    [[SEGAnalytics sharedAnalytics] track:@"testEvent" properties:@{@"testDate": [NSDate date], @"testStr": @"gufsdhjf0", @"testNum": @100}];
+    
+    
     [[MoEngage sharedInstance] registerForRemoteNotificationWithCategories:nil withUserNotificationCenterDelegate:nil];
     // Do any additional setup after loading the view, typically from a nib.
 }
