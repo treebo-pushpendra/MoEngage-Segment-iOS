@@ -3,24 +3,9 @@
 #import "SEGAnalytics.h"
 
 #define SegmentAnonymousIDAttribute @"USER_ATTRIBUTE_SEGMENT_ID"
-#define SegmentMoEngageVersion @"3.3.0"
+#define SegmentMoEngageVersion @"4.0.0"
 
 @implementation SEGMoEngageIntegration
-
-+(NSDate*)dateFromISOdateStr:(NSString*)isoDateStr{
-    if (isoDateStr != nil) {
-        static NSDateFormatter *dateFormatter;
-        static dispatch_once_t onceToken;
-        dispatch_once(&onceToken, ^{
-            dateFormatter = [[NSDateFormatter alloc] init];
-            dateFormatter.locale = [NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"];
-            dateFormatter.dateFormat = @"yyyy'-'MM'-'dd'T'HH':'mm':'ss.SSS'Z'";
-            dateFormatter.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
-        });
-        return [dateFormatter dateFromString:isoDateStr];
-    }
-    return nil;
-}
 
 #pragma mark- Initialization method
 
@@ -54,7 +39,11 @@
 #pragma mark- Application Life cycle methods
 
 -(void)applicationDidFinishLaunching:(NSNotification *)notification{
-    [[MoEngage sharedInstance]didReceieveNotificationinApplication:nil withInfo:notification.userInfo openDeeplinkUrlAutomatically:YES];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if([[UIApplication sharedApplication] isRegisteredForRemoteNotifications]){
+            [[UIApplication sharedApplication] registerForRemoteNotifications];
+        }
+    });
 }
 
 #pragma mark- Push Notification methods
@@ -220,8 +209,6 @@
     }
 }
 
-
-
 - (void)flush
 {
     [[MoEngage sharedInstance] syncNow];
@@ -231,5 +218,22 @@
 - (void)reset
 {
     [[MoEngage sharedInstance] resetUser];
+}
+
+#pragma mark- Utils
+
++(NSDate*)dateFromISOdateStr:(NSString*)isoDateStr{
+    if (isoDateStr != nil) {
+        static NSDateFormatter *dateFormatter;
+        static dispatch_once_t onceToken;
+        dispatch_once(&onceToken, ^{
+            dateFormatter = [[NSDateFormatter alloc] init];
+            dateFormatter.locale = [NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"];
+            dateFormatter.dateFormat = @"yyyy'-'MM'-'dd'T'HH':'mm':'ss.SSS'Z'";
+            dateFormatter.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
+        });
+        return [dateFormatter dateFromString:isoDateStr];
+    }
+    return nil;
 }
 @end

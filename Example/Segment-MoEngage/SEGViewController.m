@@ -27,9 +27,6 @@
     [[SEGAnalytics sharedAnalytics] identify:@"UniqueID1" traits:@{@"test_user_attr":[NSDate date]}];
     [[SEGAnalytics sharedAnalytics] track:@"testEvent" properties:@{@"testDate": [NSDate date], @"testStr": @"gufsdhjf0", @"testNum": @100}];
     
-    
-    [[MoEngage sharedInstance] registerForRemoteNotificationWithCategories:nil withUserNotificationCenterDelegate:nil];
-    // Do any additional setup after loading the view, typically from a nib.
 }
 
 -(void)viewDidAppear:(BOOL)animated{

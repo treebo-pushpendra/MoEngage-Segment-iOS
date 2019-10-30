@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "Segment-MoEngage"
-  s.version          = "3.3.0"
+  s.version          = "4.0.0"
   s.summary          = "MoEngage Integration for Segment's analytics-ios library."
 
   s.description      = <<-DESC
@@ -22,5 +22,5 @@ Pod::Spec.new do |s|
   s.source_files = 'Pod/Classes/**/*'
 
   s.dependency 'Analytics', '~> 3.0'
-  s.dependency 'MoEngage-iOS-SDK', '~>4.0'
+  s.dependency 'MoEngage-iOS-SDK', '>=5.2.4', '< 6.0'
   end
