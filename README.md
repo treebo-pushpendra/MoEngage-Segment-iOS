@@ -16,17 +16,6 @@ MoEngage can be integrated via Segment using [CocoaPods](http://cocoapods.org).
   ```ruby
   use_frameworks!
   pod 'Segment-MoEngage’
-
-  #The following code will only be required for Swift project
-  post_install do |installer|
-    installer.pods_project.targets.each do |target|
-      target.build_configurations.each do |config|
-        if target.name == “MoEngage-iOS-SDK"
-          config.build_settings["OTHER_LDFLAGS"] = '$(inherited) "-ObjC"'
-        end
-      end
-    end
-  end
   ```
 
    * Update the pod. 
