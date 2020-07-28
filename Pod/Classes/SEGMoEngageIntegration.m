@@ -3,7 +3,7 @@
 #import "SEGAnalytics.h"
 
 #define SegmentAnonymousIDAttribute @"USER_ATTRIBUTE_SEGMENT_ID"
-#define SegmentMoEngageVersion @"4.0.0"
+#define SegmentMoEngageVersion @"5.0.0"
 
 @implementation SEGMoEngageIntegration
 
@@ -12,24 +12,29 @@
 -(id)initWithSettings:(NSDictionary *)settings
 {
     if (self = [super init]) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            self.settings = settings;
-            NSString *apiKey = [self.settings objectForKey:@"apiKey"];
-            
-#ifdef DEBUG
-            [[MoEngage sharedInstance] initializeDevWithApiKey:apiKey inApplication:[UIApplication sharedApplication] withLaunchOptions:nil openDeeplinkUrlAutomatically:YES];
-#else
-            [[MoEngage sharedInstance] initializeProdWithApiKey:apiKey inApplication:[UIApplication sharedApplication] withLaunchOptions:nil openDeeplinkUrlAutomatically:YES];
-#endif
-        });
-        
-        NSString* segmentAnonymousID = [[SEGAnalytics sharedAnalytics] getAnonymousId];
-        if(segmentAnonymousID != nil){
-            NSLog(@"Anonymous ID :  %@",segmentAnonymousID);
-            [[MoEngage sharedInstance] setUserAttribute:segmentAnonymousID forKey:SegmentAnonymousIDAttribute];
-        }
         [[NSUserDefaults standardUserDefaults] setObject:SegmentMoEngageVersion forKey:MoEngage_Segment_SDK_Version];
         [[NSUserDefaults standardUserDefaults] synchronize];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.settings = settings;
+            NSString *appID = [self.settings objectForKey:@"apiKey"];
+#ifdef DEBUG
+            [[MoEngage sharedInstance] initializeDevWithAppID:appID withLaunchOptions:nil];
+#else
+            [[MoEngage sharedInstance] initializeProdWithAppID:appID withLaunchOptions:nil];
+#endif
+            NSString* segmentAnonymousID = [[SEGAnalytics sharedAnalytics] getAnonymousId];
+            if(segmentAnonymousID != nil){
+                NSLog(@"Anonymous ID :  %@",segmentAnonymousID);
+                [[MoEngage sharedInstance] setUserAttribute:segmentAnonymousID forKey:SegmentAnonymousIDAttribute];
+            }
+        });
+        
+        if (@available(iOS 10.0, *)) {
+            if ([UNUserNotificationCenter currentNotificationCenter].delegate == nil) {
+                [UNUserNotificationCenter currentNotificationCenter].delegate = self;
+            }
+        }
     }
     return self;
 }
@@ -59,11 +64,27 @@
 
 - (void)receivedRemoteNotification:(NSDictionary *)userInfo
 {
-    [[MoEngage sharedInstance] didReceieveNotificationinApplication:[UIApplication sharedApplication] withInfo:userInfo openDeeplinkUrlAutomatically:YES];
+    [[MoEngage sharedInstance] didReceieveNotificationinApplication:[UIApplication sharedApplication] withInfo:userInfo];
 }
 
 - (void)handleActionWithIdentifier:(NSString *)identifier forRemoteNotification:(NSDictionary *)userInfo{
     [[MoEngage sharedInstance] handleActionWithIdentifier:identifier forRemoteNotification:userInfo];
+}
+
+#pragma mark- User Notification Center delegate methods
+
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center
+       willPresentNotification:(UNNotification *)notification
+         withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler API_AVAILABLE(ios(10.0)){
+    completionHandler((UNNotificationPresentationOptionSound
+                       | UNNotificationPresentationOptionAlert ));
+}
+
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center
+didReceiveNotificationResponse:(UNNotificationResponse *)response
+         withCompletionHandler:(nonnull void (^)(void))completionHandler API_AVAILABLE(ios(10.0)){
+    [[MoEngage sharedInstance] userNotificationCenter:center didReceiveNotificationResponse:response];
+    completionHandler();
 }
 
 #pragma mark- Segment callback methods
@@ -180,28 +201,33 @@
 {
     @try{
         if (payload.properties != nil) {
-            MOPayloadBuilder* moe_payload = [[MOPayloadBuilder alloc] init];
-            NSMutableDictionary* finalTrackDict = [NSMutableDictionary dictionaryWithDictionary:payload.properties];
-            
+            NSMutableDictionary* generalAttributeDict = [NSMutableDictionary dictionaryWithDictionary:payload.properties];
+            NSMutableDictionary* dateAttributeDict = [NSMutableDictionary dictionary];
+        
             for (NSString* key in payload.properties.allKeys) {
                 id val = [payload.properties valueForKey:key];
                 if (val == nil || val == [NSNull null]) {
+                    [generalAttributeDict removeObjectForKey:key];
                     continue;
                 }
                 else if ([val isKindOfClass:[NSString class]]){
                     NSDate* converted_date = [SEGMoEngageIntegration dateFromISOdateStr:val];
                     if (converted_date != nil) {
-                        [moe_payload setDate:converted_date forKey:key];
-                        [finalTrackDict removeObjectForKey:key];
+                        [dateAttributeDict setValue:converted_date forKey:key];
+                        [generalAttributeDict removeObjectForKey:key];
                     }
                 }
             }
             
-            moe_payload.eventDict = finalTrackDict;
-            [[MoEngage sharedInstance] trackEvent:payload.event builderPayload:moe_payload];
+            MOProperties* moe_properties = [[MOProperties alloc] initWithAttributes:generalAttributeDict];
+            for (NSString* key in dateAttributeDict.allKeys) {
+                NSDate *dateVal = [dateAttributeDict valueForKey:key];
+                [moe_properties addDateAttribute:dateVal withName:key];
+            }
+            [[MoEngage sharedInstance] trackEvent:payload.event withProperties:moe_properties];
         }
         else{
-            [[MoEngage sharedInstance] trackEvent:payload.event andPayload:nil];
+            [[MoEngage sharedInstance] trackEvent:payload.event withProperties:nil];
         }
     }
     @catch(NSException* exception){

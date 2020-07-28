@@ -1,8 +1,8 @@
 #import <Foundation/Foundation.h>
 #import <Analytics/SEGIntegration.h>
+#import <UserNotifications/UserNotifications.h>
 
-
-@interface SEGMoEngageIntegration : NSObject <SEGIntegration>
+@interface SEGMoEngageIntegration : NSObject <SEGIntegration, UNUserNotificationCenterDelegate>
 
 @property (nonatomic, strong) NSDictionary *settings;
 
