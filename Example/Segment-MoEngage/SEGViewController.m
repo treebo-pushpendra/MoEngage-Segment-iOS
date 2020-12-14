@@ -24,9 +24,15 @@
     [[SEGAnalytics sharedAnalytics] identify:@"UniqueID1" traits:nil];
     [[SEGAnalytics sharedAnalytics] identify:@"UniqueID1" traits:@{@"email":@"test@moe.com"}];
     
-    [[SEGAnalytics sharedAnalytics] identify:@"UniqueID1" traits:@{@"test_user_attr":[NSDate date]}];
-    [[SEGAnalytics sharedAnalytics] track:@"testSegmentEvent" properties:@{@"testDate": [NSDate date], @"testStr": @"gufsdhjf0", @"testNum": @100}];
-    
+    [[SEGAnalytics sharedAnalytics] identify:@"UniqueID1" traits:@{@"test_user_attr":[self getFormattedDate]}];
+    [[SEGAnalytics sharedAnalytics] track:@"testSegmentEvent" properties:@{@"testDate": [self getFormattedDate], @"testStr": @"gufsdhjf0", @"testNum": @100}];
+}
+
+-(NSString*)getFormattedDate{
+    NSString* format = @"yyyy'-'MM'-'dd'T'HH':'mm':'ss.SSS'Z'";
+    NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
+    formatter.dateFormat = format;
+    return [formatter stringFromDate:[NSDate date]];
 }
 
 -(void)viewDidAppear:(BOOL)animated{
