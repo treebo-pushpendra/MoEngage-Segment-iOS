@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+
+Version 5.1.0 *(14th December, 2020)*
+-------------------------------------------
+* Updated Analytics SDK Dependency to 4.0.0 and above.
+
 Version 5.0.0 *(28th July, 2020)*
 -------------------------------------------
 * Updated MoEngage SDK Dependency to 6.1.0 and above.
