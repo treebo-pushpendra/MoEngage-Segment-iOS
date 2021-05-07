@@ -7,7 +7,7 @@
 //
 
 #import "SEGViewController.h"
-#import <Analytics/SEGAnalytics.h>
+#import <Segment/SEGAnalytics.h>
 #import <MoEngage/MoEngage.h>
 
 @interface SEGViewController ()
