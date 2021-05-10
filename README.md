@@ -30,7 +30,7 @@ Now head to the the App Delegate, and setup the Segment SDK :
 
  ```
  #import <SEGMoEngageIntegrationFactory.h> // This line is key for MoEngage integration
- #import <SEGAnalytics.h>
+ #import <Segment/SEGAnalytics.h>
 
  - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
@@ -153,5 +153,4 @@ For more info on using **Segment for iOS** refer to [**Developer Docs**](https:/
 See [SDK Change Log](https://github.com/moengage/MoEngage-Segment-iOS/blob/master/CHANGELOG.md) for information on every released version.
 
 ## Support
-Please visit this repository's [Github issue tracker](https://github.com/moengage/MoEngage-Segment-iOS/issues) for bug reports specific to our iOS SDK.
-For other issues and support please contact MoEngage support from your dashboard.
+For any issues you face with the SDK and for any help with the integration contact us at `support@moengage.com`.
