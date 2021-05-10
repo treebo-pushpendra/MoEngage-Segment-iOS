@@ -24,7 +24,7 @@
     [UNUserNotificationCenter currentNotificationCenter].delegate = self;
     
     [SEGAnalytics debug:true];
-    SEGAnalyticsConfiguration *configuration = [SEGAnalyticsConfiguration configurationWithWriteKey:@"p3iIs5yVhxkdufqX2MuDuAEtsEwUKr4C"];
+    SEGAnalyticsConfiguration *configuration = [SEGAnalyticsConfiguration configurationWithWriteKey:@"Your Configuration Key"];
     [configuration use:[SEGMoEngageIntegrationFactory instance]];
     configuration.trackApplicationLifecycleEvents = YES; // Enable this to record certain application events automatically!
     configuration.recordScreenViews = YES; // Enable this to record screen views automatically!
