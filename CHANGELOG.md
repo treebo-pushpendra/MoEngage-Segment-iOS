@@ -1,6 +1,10 @@
 Change Log
 ==========
 
+Version 6.1.0 *(31st August, 2021)*
+-------------------------------------------
+* Updated MoEngage SDK Dependency to 7.1.* .
+
 Version 6.0.1 *(7th May, 2021)*
 -------------------------------------------
 * Fixed import errors for Analytics SDK, as there were different import statements based on the way Analytics SDK was integrated to the project.

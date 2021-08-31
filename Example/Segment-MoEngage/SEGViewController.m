@@ -36,11 +36,6 @@
 }
 
 -(void)viewDidAppear:(BOOL)animated{
-    [self performSelector:@selector(resetUser) withObject:nil afterDelay:10.0];
-}
-
--(void)resetUser{
-    [[SEGAnalytics sharedAnalytics] reset];
 }
 
 - (void)didReceiveMemoryWarning

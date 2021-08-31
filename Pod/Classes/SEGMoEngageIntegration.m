@@ -3,7 +3,6 @@
 #import "SEGAnalytics.h"
 
 #define SegmentAnonymousIDAttribute @"USER_ATTRIBUTE_SEGMENT_ID"
-#define SegmentMoEngageVersion @"6.0.0"
 
 @implementation SEGMoEngageIntegration
 
@@ -12,9 +11,6 @@
 -(id)initWithSettings:(NSDictionary *)settings
 {
     if (self = [super init]) {
-        [[NSUserDefaults standardUserDefaults] setObject:SegmentMoEngageVersion forKey:MoEngage_Segment_SDK_Version];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-        
         dispatch_async(dispatch_get_main_queue(), ^{
             self.settings = settings;
             NSString *appID = [self.settings objectForKey:@"apiKey"];
@@ -25,6 +21,9 @@
             else{
                 currentConfig.moeAppID = appID;
             }
+            currentConfig.pluginIntegrationType = SEGMENT;
+            currentConfig.pluginIntegrationVersion = [SEGMoEngageIntegration getSegmentMoEngageVersion];
+            
 #ifdef DEBUG
             [[MoEngage sharedInstance] initializeTestWithConfig:currentConfig andLaunchOptions:nil];
 #else
@@ -46,7 +45,11 @@
     return self;
 }
 
-
++(NSString*)getSegmentMoEngageVersion{
+    NSDictionary *infoDictionary = [[NSBundle bundleForClass:[SEGMoEngageIntegration class]] infoDictionary];
+    NSString *version = [infoDictionary valueForKey:@"CFBundleShortVersionString"];
+    return version;
+}
 
 #pragma mark- Application Life cycle methods
 
