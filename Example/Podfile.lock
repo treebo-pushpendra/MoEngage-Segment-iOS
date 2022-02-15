@@ -4,6 +4,8 @@ PODS:
   - MoEngage-iOS-SDK (8.0.0)
   - MoEngageInApp (3.0.0):
     - MoEngage-iOS-SDK (< 8.1.0, >= 8.0.0)
+  - MoEngageInbox (1.0.0):
+    - MoEngage-iOS-SDK (< 8.1.0, >= 8.0.0)
   - MoEngageRealTimeTrigger (1.0.0):
     - MoEngage-iOS-SDK (< 8.1.0, >= 8.0.0)
   - MoEngageRichNotification (6.0.0):
@@ -11,12 +13,13 @@ PODS:
   - Segment-MoEngage (7.0.0):
     - Analytics (~> 4.0)
     - MoEngage-iOS-SDK (< 8.1.0, >= 8.0.0)
-  - Specta (1.0.7)
+  - Specta (2.0.0)
 
 DEPENDENCIES:
   - Expecta
   - MoEngage-iOS-SDK (from `https://github.com/moengage/MoEngage-iOS-Pods.git`, branch `framework`)
   - MoEngageInApp (from `https://github.com/moengage/MoEngage-iOS-Pods.git`, branch `framework`)
+  - MoEngageInbox (from `https://github.com/moengage/MoEngage-iOS-Pods.git`, branch `framework`)
   - MoEngageRealTimeTrigger (from `https://github.com/moengage/MoEngage-iOS-Pods.git`, branch `framework`)
   - MoEngageRichNotification (from `https://github.com/moengage/MoEngage-iOS-Pods.git`, branch `framework`)
   - Segment-MoEngage (from `../`)
@@ -35,6 +38,9 @@ EXTERNAL SOURCES:
   MoEngageInApp:
     :branch: framework
     :git: https://github.com/moengage/MoEngage-iOS-Pods.git
+  MoEngageInbox:
+    :branch: framework
+    :git: https://github.com/moengage/MoEngage-iOS-Pods.git
   MoEngageRealTimeTrigger:
     :branch: framework
     :git: https://github.com/moengage/MoEngage-iOS-Pods.git
@@ -46,16 +52,19 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   MoEngage-iOS-SDK:
-    :commit: ca183de335a8f7ec678dc3d4b72f78efae896329
+    :commit: 5e82a339e49dcf74fb5e0168d038290f5a0840e9
     :git: https://github.com/moengage/MoEngage-iOS-Pods.git
   MoEngageInApp:
-    :commit: ca183de335a8f7ec678dc3d4b72f78efae896329
+    :commit: 5e82a339e49dcf74fb5e0168d038290f5a0840e9
+    :git: https://github.com/moengage/MoEngage-iOS-Pods.git
+  MoEngageInbox:
+    :commit: 5e82a339e49dcf74fb5e0168d038290f5a0840e9
     :git: https://github.com/moengage/MoEngage-iOS-Pods.git
   MoEngageRealTimeTrigger:
-    :commit: ca183de335a8f7ec678dc3d4b72f78efae896329
+    :commit: 5e82a339e49dcf74fb5e0168d038290f5a0840e9
     :git: https://github.com/moengage/MoEngage-iOS-Pods.git
   MoEngageRichNotification:
-    :commit: ca183de335a8f7ec678dc3d4b72f78efae896329
+    :commit: 5e82a339e49dcf74fb5e0168d038290f5a0840e9
     :git: https://github.com/moengage/MoEngage-iOS-Pods.git
 
 SPEC CHECKSUMS:
@@ -63,11 +72,12 @@ SPEC CHECKSUMS:
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   MoEngage-iOS-SDK: a2414fd0da73126319fa313ec34b7f69c635f60e
   MoEngageInApp: 72af0d8ed1df7751a5e157e8da147b615821ffda
+  MoEngageInbox: c9919562fcb7e2e2bcfc8231027121bccce27ae3
   MoEngageRealTimeTrigger: 09da65c49c04ba0fd45382f21fad01f8dbdb4d18
   MoEngageRichNotification: 2f915919aed28a6e4e327678db6dcc75419d2886
   Segment-MoEngage: b8c9521d3c6a9f2fc7faf84b2d4beea805b1d2ab
-  Specta: 3e1bd89c3517421982dc4d1c992503e48bd5fe66
+  Specta: b79d84043684b35ffdc2680df578dc318ec2efc2
 
-PODFILE CHECKSUM: 2b1f943987428ab49548e0f1e8dd98fd889713ff
+PODFILE CHECKSUM: f9b96dfdf49e78c6fe423eb0886750c6c887f6cf
 
 COCOAPODS: 1.11.2
