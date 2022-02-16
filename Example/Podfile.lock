@@ -52,19 +52,19 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   MoEngage-iOS-SDK:
-    :commit: 5e82a339e49dcf74fb5e0168d038290f5a0840e9
+    :commit: 2e2325a71a145c114f352d1dc45b3eb471b1372a
     :git: https://github.com/moengage/MoEngage-iOS-Pods.git
   MoEngageInApp:
-    :commit: 5e82a339e49dcf74fb5e0168d038290f5a0840e9
+    :commit: 2e2325a71a145c114f352d1dc45b3eb471b1372a
     :git: https://github.com/moengage/MoEngage-iOS-Pods.git
   MoEngageInbox:
-    :commit: 5e82a339e49dcf74fb5e0168d038290f5a0840e9
+    :commit: 2e2325a71a145c114f352d1dc45b3eb471b1372a
     :git: https://github.com/moengage/MoEngage-iOS-Pods.git
   MoEngageRealTimeTrigger:
-    :commit: 5e82a339e49dcf74fb5e0168d038290f5a0840e9
+    :commit: 2e2325a71a145c114f352d1dc45b3eb471b1372a
     :git: https://github.com/moengage/MoEngage-iOS-Pods.git
   MoEngageRichNotification:
-    :commit: 5e82a339e49dcf74fb5e0168d038290f5a0840e9
+    :commit: 2e2325a71a145c114f352d1dc45b3eb471b1372a
     :git: https://github.com/moengage/MoEngage-iOS-Pods.git
 
 SPEC CHECKSUMS:

@@ -27,6 +27,7 @@
 
     //TODO: Revert bundle id    
     MOSDKConfig* sdkConfig = [[MOSDKConfig alloc] initWithAppID:@"DAO6UGZ73D9RTK8B5W96TPYN"];
+    sdkConfig.appGroupID = @"group.com.alphadevs.MoEngage.NotificationServices";
     [SEGMoEngageInitializer initializeDefaultInstance:sdkConfig];
     [MoEngage enableSDKLogs:true forAppID:sdkConfig.moeAppID];
 
