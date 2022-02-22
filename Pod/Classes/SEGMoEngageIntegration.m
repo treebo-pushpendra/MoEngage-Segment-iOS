@@ -116,23 +116,22 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
         }
         
         if ([traits objectForKey:@"id"]) {
-            [[MoEngage sharedInstance] setUserUniqueID:[traits objectForKey:@"id"]];
-            [[MoEngage sharedInstance] setUserUniqueID: [traits objectForKey:@"id"] forAppID: appID];
+            [[MoEngage sharedInstance] setUniqueID:[traits objectForKey:@"id"] forAppID: appID];
             [traits removeObjectForKey:@"id"];
         }
         
         if ([traits objectForKey:@"email"]) {
-            [[MoEngage sharedInstance] setUserEmailID:[traits objectForKey:@"email"] forAppID:appID];
+            [[MoEngage sharedInstance] setEmailID:[traits objectForKey:@"email"] forAppID:appID];
             [traits removeObjectForKey:@"email"];
         }
         
         if ([traits objectForKey:@"name"]) {
-            [[MoEngage sharedInstance] setUserName:[traits objectForKey:@"name"] forAppID:appID];
+            [[MoEngage sharedInstance] setName:[traits objectForKey:@"name"] forAppID:appID];
             [traits removeObjectForKey:@"name"];
         }
         
         if ([traits objectForKey:@"phone"]) {
-            [[MoEngage sharedInstance] setUserMobileNo:[traits objectForKey:@"phone"] forAppID:appID];
+            [[MoEngage sharedInstance] setMobileNo:[traits objectForKey:@"phone"] forAppID:appID];
             [traits removeObjectForKey:@"phone"];
         }
         
@@ -142,7 +141,7 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
         }
         
         if ([traits objectForKey:@"lastName"]) {
-            [[MoEngage sharedInstance] setUserLastName:[traits objectForKey:@"lastName"] forAppID:appID];
+            [[MoEngage sharedInstance] setLastName:[traits objectForKey:@"lastName"] forAppID:appID];
             [traits removeObjectForKey:@"lastName"];
         }
         
@@ -186,7 +185,7 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
     if ([value isKindOfClass:[NSString class]]) {
         NSDate* converted_date = [SEGMoEngageIntegration dateFromISOdateStr:value];
         if (converted_date != nil) {
-            [[MoEngage sharedInstance] setUserAttributeTimestamp:[converted_date timeIntervalSince1970] forKey:attr_name forAppID:appID];
+            [[MoEngage sharedInstance] setUserAttributeEpochTime:[converted_date timeIntervalSince1970] forKey:attr_name forAppID:appID];
             return;
         }
     }
