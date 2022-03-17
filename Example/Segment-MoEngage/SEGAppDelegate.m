@@ -26,12 +26,10 @@
     [SEGAnalytics debug:true];
 
     //TODO: Revert bundle id    
-    MOSDKConfig* sdkConfig = [[MOSDKConfig alloc] initWithAppID:@"DAO6UGZ73D9RTK8B5W96TPYN"];
-    sdkConfig.appGroupID = @"group.com.alphadevs.MoEngage.NotificationServices";
+    MOSDKConfig* sdkConfig = [[MOSDKConfig alloc] initWithAppID:@"YOUR APP ID"];
     [SEGMoEngageInitializer initializeDefaultInstance:sdkConfig];
-    [MoEngage enableSDKLogs:true forAppID:sdkConfig.moeAppID];
 
-    SEGAnalyticsConfiguration *configuration = [SEGAnalyticsConfiguration configurationWithWriteKey:@"6XjfktaG0LXHRwwn1quJwlW1Lo2Ol6WJ"];
+    SEGAnalyticsConfiguration *configuration = [SEGAnalyticsConfiguration configurationWithWriteKey:@"YOUR CONFIGURATION KEY"];
     [configuration use:[SEGMoEngageIntegrationFactory instance]];
     configuration.trackApplicationLifecycleEvents = YES; // Enable this to record certain application events automatically!
     configuration.recordScreenViews = YES; // Enable this to record screen views automatically!
@@ -42,6 +40,7 @@
     
     //Register for notification
     [[MoEngage sharedInstance] registerForRemoteNotificationWithCategories:nil withUserNotificationCenterDelegate:self];
+    [MoEngage enableSDKLogs:true forAppID:sdkConfig.moeAppID];
 
     return YES;
 }

@@ -24,19 +24,28 @@ MoEngage can be integrated via Segment using [CocoaPods](http://cocoapods.org).
 
 ## Setup Segment SDK:
 
-Now head to the the App Delegate, and setup the Segment SDK :
+Now head to the App Delegate file, and setup the Segment SDK by
+1. Importing `SEGMoEngageIntegrationFactory.h` and `SEGMoEngageInitializer.h`.
+2. Initialize `MOSDKConfig` object and call `initializeDefaultInstance:` method of `SEGMoEngageInitializer`.
+3. Initialize `SEGMoEngageIntegrationFactory` instance to the `SEGAnalyticsConfiguration` as shown below:
+
 
 ### Objective-C:
 
  ```
- #import <SEGMoEngageIntegrationFactory.h> // This line is key for MoEngage integration
- #import <Segment/SEGAnalytics.h>
+ #import <SEGMoEngageIntegrationFactory.h>
+ #import <SEGMoEngageInitializer.h>
+ #import <SEGAnalytics.h>
 
  - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+
+    //Initialize SDKConfig object and call initializeDefaultInstance: method of SEGMoEngageInitializer
+    MOSDKConfig* sdkConfig = [[MOSDKConfig alloc] initWithAppID:@"YOUR APP ID"];
+    [SEGMoEngageInitializer initializeDefaultInstance:sdkConfig];
     
     // Add your configuration key from Segment
     SEGAnalyticsConfiguration *config = [SEGAnalyticsConfiguration configurationWithWriteKey:@"configuration key"];
-    
+
     // Add MoEngageIntegrationFactory. Without this data will not come to MoEngage.
     [config use:[SEGMoEngageIntegrationFactory instance]];
     [SEGAnalytics setupWithConfiguration:config];
@@ -51,6 +60,9 @@ Now head to the the App Delegate, and setup the Segment SDK :
  ...
  func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey:  Any]?) -> Bool {
  ...
+     let sdkConfig = MOSDKConfig(appID: "YOUR APP ID")
+     SEGMoEngageInitializer.initializeDefaultInstance(sdkConfig)
+     
 	 // Add your configuration key from Segment
 	 let config = SEGAnalyticsConfiguration(writeKey:"configuration key")
   
@@ -64,7 +76,7 @@ Now head to the the App Delegate, and setup the Segment SDK :
 ## Setup MoEngage in Segment Dashboard:
 
 To setup MoEngage do the following : 
-  1. First get your key([AppID](http://app.moengage.com/v3/#/settings/0/0)) from MoEngage dashboard. 
+  1. First get your key from MoEngage dashboard. (Dashboard -> Settings -> General -> General Settings -> AppID)
   2. Go to **Segment dashboard**, go to **Integrations** and select **MoEngage**. 
   3. Enable MoEngage Integration.
   4. Go to MoEngage Settings and enter the MoEngage AppID, obtained in **Step1**.
@@ -105,13 +117,13 @@ To differentiate between those, use one of the method below:
 
  ```
  //For new Install call following
- [[MoEngage sharedInstance] appStatus:INSTALL];
+ [[MoEngage sharedInstance] appStatus:AppStatusInstall];
 
  //For an app update call following
- [[MoEngage sharedInstance] appStatus:UPDATE];
+ [[MoEngage sharedInstance] appStatus:AppStatusUpdate];
  ```
 
-For more info on this refer following [link](https://docs.moengage.com/docs/installupdate-differentiation).
+For more info on this refer following [link](https://developers.moengage.com/hc/en-us/articles/4403910297620).
 
 ## Using features provided in MoEngage SDK
 
@@ -138,13 +150,13 @@ Push Notifications are a great way to keep your users engaged and informed about
  
 #### MoEngage Push Implementation:
  Follow this link to implement Push Notification in your mobile app using MoEngage SDK : 
- [**Push Notifications**](https://docs.moengage.com/docs/push-notifications)
+ [**Push Notifications**](https://developers.moengage.com/hc/en-us/articles/4403943988756)
 
 
 ### In-App Messaging:
 
 In-App Messaging are custom views which you can send to a segment of users to show custom messages or give new offers or take to some specific pages. Follow the link to know more about  inApp Messaging and how to implement it in your application: 
-[**InApp NATIV**](https://docs.moengage.com/docs/in-app-nativ)
+[**InApp NATIV**](https://developers.moengage.com/hc/en-us/articles/4404155127828-In-App-Nativ)
 
 ## Segment Docs:
 For more info on using **Segment for iOS** refer to [**Developer Docs**](https://segment.com/docs/sources/mobile/ios/) provided by Segment.

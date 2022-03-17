@@ -7,7 +7,7 @@
 //
 
 #import "NotificationService.h"
-@import  MoEngageRichNotification;
+#import <MoEngageRichNotification/MoEngageRichNotification.h>
 
 @interface NotificationService ()
 
