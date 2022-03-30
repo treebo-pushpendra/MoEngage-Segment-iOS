@@ -1,5 +1,10 @@
 Change Log
 ==========
+Version 7.0.0 *(30st March, 2022)*
+-------------------------------------------
+* Updated MoEngage SDK Dependency to 8.1.* .
+* Introduced `SEGMoEngageInitializer.h` class that initializes MoEngage-iOS-SDK.
+* Added support for Swift Package Manager.
 
 Version 6.1.0 *(31st August, 2021)*
 -------------------------------------------

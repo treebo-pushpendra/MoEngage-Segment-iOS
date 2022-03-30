@@ -1,8 +1,13 @@
 #import "SEGMoEngageIntegration.h"
-#import <MoEngage/MoEngage.h>
+#import <MoEngageSDK/MoEngageSDK.h>
 #import "SEGAnalytics.h"
+#import "SEGMoEngageInitializer.h"
 
 #define SegmentAnonymousIDAttribute @"USER_ATTRIBUTE_SEGMENT_ID"
+
+@interface SEGMoEngageIntegration()
+@end
+
 
 @implementation SEGMoEngageIntegration
 
@@ -11,28 +16,23 @@
 -(id)initWithSettings:(NSDictionary *)settings
 {
     if (self = [super init]) {
+        self.settings = settings;
+        NSString *appID = [self.settings objectForKey:@"apiKey"];
+        
+        MOSDKConfig* currentConfig = [SEGMoEngageInitializer fetchSDKConfigObject];
+        
+        if (![appID isEqual:currentConfig.moeAppID]) {
+            NSLog(@"Failed to Enable SDK due to AppID mismatch.Make sure to initialize SEGMoEngageInitializer with same appID.");
+            return self;
+        }
+        
+        [MoEngage.sharedInstance enableSDKForSegment:currentConfig];
+
         dispatch_async(dispatch_get_main_queue(), ^{
-            self.settings = settings;
-            NSString *appID = [self.settings objectForKey:@"apiKey"];
-            MOSDKConfig* currentConfig = [[MoEngage sharedInstance] getDefaultSDKConfiguration];
-            if (currentConfig == nil) {
-                currentConfig = [[MOSDKConfig alloc] initWithAppID:appID];
-            }
-            else{
-                currentConfig.moeAppID = appID;
-            }
-            currentConfig.pluginIntegrationType = SEGMENT;
-            currentConfig.pluginIntegrationVersion = [SEGMoEngageIntegration getSegmentMoEngageVersion];
-            
-#ifdef DEBUG
-            [[MoEngage sharedInstance] initializeTestWithConfig:currentConfig andLaunchOptions:nil];
-#else
-            [[MoEngage sharedInstance] initializeLiveWithConfig:currentConfig andLaunchOptions:nil];
-#endif
             NSString* segmentAnonymousID = [[SEGAnalytics sharedAnalytics] getAnonymousId];
             if(segmentAnonymousID != nil){
                 NSLog(@"Anonymous ID :  %@",segmentAnonymousID);
-                [[MoEngage sharedInstance] setUserAttribute:segmentAnonymousID forKey:SegmentAnonymousIDAttribute];
+                [[MoEngage sharedInstance] setUserAttribute:segmentAnonymousID forKey:SegmentAnonymousIDAttribute forAppID: appID];
             }
         });
         
@@ -77,10 +77,6 @@
     [[MoEngage sharedInstance] didReceieveNotificationinApplication:[UIApplication sharedApplication] withInfo:userInfo];
 }
 
-- (void)handleActionWithIdentifier:(NSString *)identifier forRemoteNotification:(NSDictionary *)userInfo{
-    [[MoEngage sharedInstance] handleActionWithIdentifier:identifier forRemoteNotification:userInfo];
-}
-
 #pragma mark- User Notification Center delegate methods
 
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center
@@ -104,12 +100,14 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
     @try {
         NSDictionary *moengagePayloadDict = [payload.traits copy];
         
+        NSString* appID = [SEGMoEngageIntegration fetchCurrentAppID];
+        
         if (payload.anonymousId != nil) {
-            [[MoEngage sharedInstance] setUserAttribute:payload.anonymousId forKey:SegmentAnonymousIDAttribute];
+            [[MoEngage sharedInstance] setUserAttribute:payload.anonymousId forKey:SegmentAnonymousIDAttribute forAppID:appID];
         }
         
         if(payload.userId != nil){
-            [[MoEngage sharedInstance] setUserAttribute:payload.userId forKey:USER_ATTRIBUTE_UNIQUE_ID];
+            [[MoEngage sharedInstance] setUserAttribute:payload.userId forKey:@"USER_ATTRIBUTE_UNIQUE_ID" forAppID:appID];
         }
         
         NSMutableDictionary *traits = [NSMutableDictionary dictionaryWithDictionary:moengagePayloadDict];
@@ -118,55 +116,55 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
         }
         
         if ([traits objectForKey:@"id"]) {
-            [[MoEngage sharedInstance] setUserUniqueID:[traits objectForKey:@"id"]];
+            [[MoEngage sharedInstance] setUniqueID:[traits objectForKey:@"id"] forAppID: appID];
             [traits removeObjectForKey:@"id"];
         }
         
         if ([traits objectForKey:@"email"]) {
-            [[MoEngage sharedInstance] setUserEmailID:[traits objectForKey:@"email"]];
+            [[MoEngage sharedInstance] setEmailID:[traits objectForKey:@"email"] forAppID:appID];
             [traits removeObjectForKey:@"email"];
         }
         
         if ([traits objectForKey:@"name"]) {
-            [[MoEngage sharedInstance] setUserName:[traits objectForKey:@"name"]];
+            [[MoEngage sharedInstance] setName:[traits objectForKey:@"name"] forAppID:appID];
             [traits removeObjectForKey:@"name"];
         }
         
         if ([traits objectForKey:@"phone"]) {
-            [[MoEngage sharedInstance] setUserMobileNo:[traits objectForKey:@"phone"]];
+            [[MoEngage sharedInstance] setMobileNo:[traits objectForKey:@"phone"] forAppID:appID];
             [traits removeObjectForKey:@"phone"];
         }
         
         if ([traits objectForKey:@"firstName"]) {
-            [[MoEngage sharedInstance] setUserAttribute:[traits objectForKey:@"firstName"] forKey:USER_ATTRIBUTE_USER_FIRST_NAME];
+            [[MoEngage sharedInstance] setUserAttribute:[traits objectForKey:@"firstName"] forKey:@"USER_ATTRIBUTE_USER_FIRST_NAME" forAppID:appID];
             [traits removeObjectForKey:@"firstName"];
         }
         
         if ([traits objectForKey:@"lastName"]) {
-            [[MoEngage sharedInstance] setUserLastName:[traits objectForKey:@"lastName"]];
+            [[MoEngage sharedInstance] setLastName:[traits objectForKey:@"lastName"] forAppID:appID];
             [traits removeObjectForKey:@"lastName"];
         }
         
         if ([traits objectForKey:@"gender"]) {
-            [[MoEngage sharedInstance] setUserAttribute:[traits objectForKey:@"gender"] forKey:USER_ATTRIBUTE_USER_GENDER];
+            [[MoEngage sharedInstance] setUserAttribute:[traits objectForKey:@"gender"] forKey:@"USER_ATTRIBUTE_USER_GENDER" forAppID:appID];
             [traits removeObjectForKey:@"gender"];
         }
         
         if ([traits objectForKey:@"birthday"]) {
             id birthdayVal = [traits objectForKey:@"birthday"];
             if (birthdayVal != nil){
-                [self identifyDateUserAttribute:birthdayVal withKey:USER_ATTRIBUTE_USER_BDAY];
+                [self identifyDateUserAttribute:birthdayVal withKey:@"USER_ATTRIBUTE_USER_BDAY"];
             }
             [traits removeObjectForKey:@"birthday"];
         }
         
         if ([traits objectForKey:@"address"]) {
-            [[MoEngage sharedInstance] setUserAttribute:[traits objectForKey:@"address"] forKey:@"address"];
+            [[MoEngage sharedInstance] setUserAttribute:[traits objectForKey:@"address"] forKey:@"address" forAppID:appID];
             [traits removeObjectForKey:@"address"];
         }
         
         if ([traits objectForKey:@"age"]) {
-            [[MoEngage sharedInstance] setUserAttribute:[traits objectForKey:@"age"] forKey:@"age"];
+            [[MoEngage sharedInstance] setUserAttribute:[traits objectForKey:@"age"] forKey:@"age" forAppID:appID];
             [traits removeObjectForKey:@"age"];
         }
         for (NSString *key in [traits allKeys]) {
@@ -183,22 +181,24 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 }
 
 -(void)identifyDateUserAttribute:(id)value withKey:(NSString*)attr_name{
+    NSString* appID = [SEGMoEngageIntegration fetchCurrentAppID];
     if ([value isKindOfClass:[NSString class]]) {
         NSDate* converted_date = [SEGMoEngageIntegration dateFromISOdateStr:value];
         if (converted_date != nil) {
-            [[MoEngage sharedInstance] setUserAttributeTimestamp:[converted_date timeIntervalSince1970] forKey:attr_name];
+            [[MoEngage sharedInstance] setUserAttributeEpochTime:[converted_date timeIntervalSince1970] forKey:attr_name forAppID:appID];
             return;
         }
     }
-    [[MoEngage sharedInstance] setUserAttribute:value forKey:attr_name];
+    [[MoEngage sharedInstance] setUserAttribute:value forKey:attr_name forAppID:appID];
 }
 
 -(void)alias:(SEGAliasPayload *)payload{
     @try{
+        NSString* appID = [SEGMoEngageIntegration fetchCurrentAppID];
         id newID = payload.theNewId;
         if (newID != nil){
             if ([[MoEngage sharedInstance] respondsToSelector:@selector(setAlias:)]){
-                [[MoEngage sharedInstance] setAlias:newID];
+                [[MoEngage sharedInstance] setAlias:newID forAppID:appID];
             }
         }
     }
@@ -209,11 +209,13 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 
 - (void)track:(SEGTrackPayload *)payload
 {
+    
     @try{
+        NSString* appID = [SEGMoEngageIntegration fetchCurrentAppID];
         if (payload.properties != nil) {
             NSMutableDictionary* generalAttributeDict = [NSMutableDictionary dictionaryWithDictionary:payload.properties];
             NSMutableDictionary* dateAttributeDict = [NSMutableDictionary dictionary];
-        
+            
             for (NSString* key in payload.properties.allKeys) {
                 id val = [payload.properties valueForKey:key];
                 if (val == nil || val == [NSNull null]) {
@@ -234,10 +236,10 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
                 NSDate *dateVal = [dateAttributeDict valueForKey:key];
                 [moe_properties addDateAttribute:dateVal withName:key];
             }
-            [[MoEngage sharedInstance] trackEvent:payload.event withProperties:moe_properties];
+            [[MoEngage sharedInstance] trackEvent:payload.event withProperties:moe_properties forAppID:appID];
         }
         else{
-            [[MoEngage sharedInstance] trackEvent:payload.event withProperties:nil];
+            [[MoEngage sharedInstance] trackEvent:payload.event withProperties:nil forAppID:appID];
         }
     }
     @catch(NSException* exception){
@@ -245,15 +247,15 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
     }
 }
 
-- (void)flush
-{
-    [[MoEngage sharedInstance] syncNow];
+- (void)flush{
+    NSString* appID = [SEGMoEngageIntegration fetchCurrentAppID];
+    [[MoEngage sharedInstance] flushForAppID:appID];
 }
 
 
-- (void)reset
-{
-    [[MoEngage sharedInstance] resetUser];
+- (void)reset{
+    NSString* appID = [SEGMoEngageIntegration fetchCurrentAppID];
+    [[MoEngage sharedInstance] resetUserForAppID:appID];
 }
 
 #pragma mark- Utils
@@ -271,5 +273,9 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
         return [dateFormatter dateFromString:isoDateStr];
     }
     return nil;
+}
+
++(NSString*)fetchCurrentAppID {
+    return [SEGMoEngageInitializer fetchSDKConfigObject].moeAppID;
 }
 @end

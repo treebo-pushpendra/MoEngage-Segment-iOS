@@ -9,8 +9,8 @@
 #import "SEGAppDelegate.h"
 #import <Segment/SEGAnalytics.h>
 #import <SEGMoEngageIntegrationFactory.h>
-#import <MoEngage/MoEngage.h>
 #import <UserNotifications/UserNotifications.h>
+#import <SEGMoEngageInitializer.h>
 
 @interface  SEGAppDelegate()<UNUserNotificationCenterDelegate>
 
@@ -20,20 +20,25 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
-    [MoEngage enableSDKLogs:true];
     [UNUserNotificationCenter currentNotificationCenter].delegate = self;
     
     [SEGAnalytics debug:true];
-    SEGAnalyticsConfiguration *configuration = [SEGAnalyticsConfiguration configurationWithWriteKey:@"Your Configuration Key"];
+
+    MOSDKConfig* sdkConfig = [[MOSDKConfig alloc] initWithAppID:@"YOUR APP ID"];
+    sdkConfig.enableLogs = true;
+    [SEGMoEngageInitializer initializeDefaultInstance:sdkConfig];
+
+    SEGAnalyticsConfiguration *configuration = [SEGAnalyticsConfiguration configurationWithWriteKey:@"YOUR CONFIGURATION KEY"];
     [configuration use:[SEGMoEngageIntegrationFactory instance]];
     configuration.trackApplicationLifecycleEvents = YES; // Enable this to record certain application events automatically!
     configuration.recordScreenViews = YES; // Enable this to record screen views automatically!
     [SEGAnalytics setupWithConfiguration:configuration];
+    [[SEGAnalytics sharedAnalytics] identify:@"UniqueID2" traits:nil];
+
     
     
     //Register for notification
     [[MoEngage sharedInstance] registerForRemoteNotificationWithCategories:nil withUserNotificationCenterDelegate:self];
-
     return YES;
 }
 
