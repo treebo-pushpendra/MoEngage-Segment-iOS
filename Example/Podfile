@@ -3,8 +3,6 @@ target 'Segment-MoEngage_Example' do
 
   pod 'Segment-MoEngage', :path => '../'
   pod 'MoEngageInApp'
-  pod 'MoEngageRealTimeTrigger'
-  pod 'MoEngageInbox'
 
   target 'Segment-MoEngage_Tests' do
     inherit! :search_paths

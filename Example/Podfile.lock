@@ -1,27 +1,19 @@
 PODS:
   - Analytics (4.1.6)
   - Expecta (1.0.6)
-  - MoEngage-iOS-SDK (8.0.0)
-  - MoEngageInApp (3.0.0):
-    - MoEngage-iOS-SDK (< 8.1.0, >= 8.0.0)
-  - MoEngageInbox (1.0.0):
-    - MoEngage-iOS-SDK (< 8.1.0, >= 8.0.0)
-    - MoEngageRichNotification (< 6.1.0, >= 6.0.0)
-  - MoEngageRealTimeTrigger (1.0.0):
-    - MoEngage-iOS-SDK (< 8.1.0, >= 8.0.0)
-    - MoEngageRichNotification (< 6.1.0, >= 6.0.0)
-  - MoEngageRichNotification (6.0.0):
-    - MoEngage-iOS-SDK (< 8.1.0, >= 8.0.0)
+  - MoEngage-iOS-SDK (8.1.0)
+  - MoEngageInApp (3.1.0):
+    - MoEngage-iOS-SDK (< 8.2.0, >= 8.1.0)
+  - MoEngageRichNotification (6.1.0):
+    - MoEngage-iOS-SDK (< 8.2.0, >= 8.1.0)
   - Segment-MoEngage (7.0.0):
     - Analytics (~> 4.0)
-    - MoEngage-iOS-SDK (< 8.1.0, >= 8.0.0)
+    - MoEngage-iOS-SDK (< 8.2.0, >= 8.1.0)
   - Specta (2.0.0)
 
 DEPENDENCIES:
   - Expecta
   - MoEngageInApp
-  - MoEngageInbox
-  - MoEngageRealTimeTrigger
   - MoEngageRichNotification
   - Segment-MoEngage (from `../`)
   - Specta
@@ -32,8 +24,6 @@ SPEC REPOS:
     - Expecta
     - MoEngage-iOS-SDK
     - MoEngageInApp
-    - MoEngageInbox
-    - MoEngageRealTimeTrigger
     - MoEngageRichNotification
     - Specta
 
@@ -44,14 +34,12 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   Analytics: eefe524436f904b8bb3f8c8c3425280e43b34efc
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
-  MoEngage-iOS-SDK: 0250e6dc0ecaec9efe2a2a5a9b2dc9ce50c7f7f9
-  MoEngageInApp: 0a3a9c67691f9590876f1efacd33a0475cd607c3
-  MoEngageInbox: 787f5b13743c38d4ba89e7740f008917a44b0ab5
-  MoEngageRealTimeTrigger: eb20cc1d52bcca1475b726f5783c53308f6fc09d
-  MoEngageRichNotification: 8911ff0367e2591be9cee216fca536bd2d5d5bcd
-  Segment-MoEngage: b8c9521d3c6a9f2fc7faf84b2d4beea805b1d2ab
+  MoEngage-iOS-SDK: 7513dbd71ab62e1d992363fd32dbd8115c3c956d
+  MoEngageInApp: 2db209dee39a59b3808b10845ed5dd6e03b39f0f
+  MoEngageRichNotification: 450f5668a3be8d5763ea3bbbbcbc9ef8a0e8c449
+  Segment-MoEngage: 1619820cbabf9fbdbb79419604e0f40a9c21c69b
   Specta: b79d84043684b35ffdc2680df578dc318ec2efc2
 
-PODFILE CHECKSUM: 5dc6b417bfdd2c0929e46b6faacd7e8cfd6fcb32
+PODFILE CHECKSUM: 0fbf47174183e23e7d55856303597d40056efa15
 
 COCOAPODS: 1.11.2

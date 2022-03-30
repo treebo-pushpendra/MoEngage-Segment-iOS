@@ -22,5 +22,5 @@ Pod::Spec.new do |s|
   s.source_files = 'Pod/Classes/**/*'
 
   s.dependency 'Analytics', '~> 4.0'
-  s.dependency 'MoEngage-iOS-SDK', '>=8.0.0', '< 8.1.0'
+  s.dependency 'MoEngage-iOS-SDK', '>=8.1.0', '< 8.2.0'
   end

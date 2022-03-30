@@ -9,7 +9,6 @@
 #import "SEGAppDelegate.h"
 #import <Segment/SEGAnalytics.h>
 #import <SEGMoEngageIntegrationFactory.h>
-#import <MoEngageSDK/MoEngageSDK.h>
 #import <UserNotifications/UserNotifications.h>
 #import <SEGMoEngageInitializer.h>
 
@@ -25,8 +24,8 @@
     
     [SEGAnalytics debug:true];
 
-    //TODO: Revert bundle id    
     MOSDKConfig* sdkConfig = [[MOSDKConfig alloc] initWithAppID:@"YOUR APP ID"];
+    sdkConfig.enableLogs = true;
     [SEGMoEngageInitializer initializeDefaultInstance:sdkConfig];
 
     SEGAnalyticsConfiguration *configuration = [SEGAnalyticsConfiguration configurationWithWriteKey:@"YOUR CONFIGURATION KEY"];
@@ -40,8 +39,6 @@
     
     //Register for notification
     [[MoEngage sharedInstance] registerForRemoteNotificationWithCategories:nil withUserNotificationCenterDelegate:self];
-    [MoEngage enableSDKLogs:true forAppID:sdkConfig.moeAppID];
-
     return YES;
 }
 
