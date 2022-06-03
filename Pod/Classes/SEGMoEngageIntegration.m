@@ -26,13 +26,13 @@
             return self;
         }
         
-        [MoEngage.sharedInstance enableSDKForSegment:currentConfig];
+        [[MOCoreIntegrator sharedInstance] enableSDKForSegmentWithInstanceID:appID];
 
         dispatch_async(dispatch_get_main_queue(), ^{
             NSString* segmentAnonymousID = [[SEGAnalytics sharedAnalytics] getAnonymousId];
             if(segmentAnonymousID != nil){
                 NSLog(@"Anonymous ID :  %@",segmentAnonymousID);
-                [[MoEngage sharedInstance] setUserAttribute:segmentAnonymousID forKey:SegmentAnonymousIDAttribute forAppID: appID];
+                [[MOAnalytics sharedInstance] setUserAttribute:segmentAnonymousID withAttributeName:SegmentAnonymousIDAttribute forAppID: appID];
             }
         });
         
@@ -103,11 +103,11 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
         NSString* appID = [SEGMoEngageIntegration fetchCurrentAppID];
         
         if (payload.anonymousId != nil) {
-            [[MoEngage sharedInstance] setUserAttribute:payload.anonymousId forKey:SegmentAnonymousIDAttribute forAppID:appID];
+            [[MOAnalytics sharedInstance] setUserAttribute:payload.anonymousId withAttributeName:SegmentAnonymousIDAttribute forAppID:appID];
         }
         
         if(payload.userId != nil){
-            [[MoEngage sharedInstance] setUserAttribute:payload.userId forKey:@"USER_ATTRIBUTE_UNIQUE_ID" forAppID:appID];
+            [[MOAnalytics sharedInstance] setUserAttribute:payload.userId withAttributeName:@"USER_ATTRIBUTE_UNIQUE_ID" forAppID:appID];
         }
         
         NSMutableDictionary *traits = [NSMutableDictionary dictionaryWithDictionary:moengagePayloadDict];
@@ -116,37 +116,37 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
         }
         
         if ([traits objectForKey:@"id"]) {
-            [[MoEngage sharedInstance] setUniqueID:[traits objectForKey:@"id"] forAppID: appID];
+            [[MOAnalytics sharedInstance] setUniqueID:[traits objectForKey:@"id"] forAppID: appID];
             [traits removeObjectForKey:@"id"];
         }
         
         if ([traits objectForKey:@"email"]) {
-            [[MoEngage sharedInstance] setEmailID:[traits objectForKey:@"email"] forAppID:appID];
+            [[MOAnalytics sharedInstance] setEmailID:[traits objectForKey:@"email"] forAppID:appID];
             [traits removeObjectForKey:@"email"];
         }
         
         if ([traits objectForKey:@"name"]) {
-            [[MoEngage sharedInstance] setName:[traits objectForKey:@"name"] forAppID:appID];
+            [[MOAnalytics sharedInstance] setName:[traits objectForKey:@"name"] forAppID:appID];
             [traits removeObjectForKey:@"name"];
         }
         
         if ([traits objectForKey:@"phone"]) {
-            [[MoEngage sharedInstance] setMobileNo:[traits objectForKey:@"phone"] forAppID:appID];
+            [[MOAnalytics sharedInstance] setMobileNumber:[traits objectForKey:@"phone"] forAppID:appID];
             [traits removeObjectForKey:@"phone"];
         }
         
         if ([traits objectForKey:@"firstName"]) {
-            [[MoEngage sharedInstance] setUserAttribute:[traits objectForKey:@"firstName"] forKey:@"USER_ATTRIBUTE_USER_FIRST_NAME" forAppID:appID];
+            [[MOAnalytics sharedInstance]setUserAttribute:[traits objectForKey:@"firstName"] withAttributeName:@"USER_ATTRIBUTE_USER_FIRST_NAME" forAppID:appID];
             [traits removeObjectForKey:@"firstName"];
         }
         
         if ([traits objectForKey:@"lastName"]) {
-            [[MoEngage sharedInstance] setLastName:[traits objectForKey:@"lastName"] forAppID:appID];
+            [[MOAnalytics sharedInstance] setLastName:[traits objectForKey:@"lastName"] forAppID:appID];
             [traits removeObjectForKey:@"lastName"];
         }
         
         if ([traits objectForKey:@"gender"]) {
-            [[MoEngage sharedInstance] setUserAttribute:[traits objectForKey:@"gender"] forKey:@"USER_ATTRIBUTE_USER_GENDER" forAppID:appID];
+            [[MOAnalytics sharedInstance] setUserAttribute:[traits objectForKey:@"gender"] withAttributeName:@"USER_ATTRIBUTE_USER_GENDER" forAppID:appID];
             [traits removeObjectForKey:@"gender"];
         }
         
@@ -159,12 +159,12 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
         }
         
         if ([traits objectForKey:@"address"]) {
-            [[MoEngage sharedInstance] setUserAttribute:[traits objectForKey:@"address"] forKey:@"address" forAppID:appID];
+            [[MOAnalytics sharedInstance]setUserAttribute:[traits objectForKey:@"address"] withAttributeName:@"address" forAppID:appID];
             [traits removeObjectForKey:@"address"];
         }
         
         if ([traits objectForKey:@"age"]) {
-            [[MoEngage sharedInstance] setUserAttribute:[traits objectForKey:@"age"] forKey:@"age" forAppID:appID];
+            [[MOAnalytics sharedInstance] setUserAttribute:[traits objectForKey:@"age"] withAttributeName:@"age" forAppID:appID];
             [traits removeObjectForKey:@"age"];
         }
         for (NSString *key in [traits allKeys]) {
@@ -185,11 +185,11 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
     if ([value isKindOfClass:[NSString class]]) {
         NSDate* converted_date = [SEGMoEngageIntegration dateFromISOdateStr:value];
         if (converted_date != nil) {
-            [[MoEngage sharedInstance] setUserAttributeEpochTime:[converted_date timeIntervalSince1970] forKey:attr_name forAppID:appID];
+            [[MOAnalytics sharedInstance] setUserAttributeEpochTime:[converted_date timeIntervalSince1970] withAttributeName:attr_name forAppID:appID];
             return;
         }
     }
-    [[MoEngage sharedInstance] setUserAttribute:value forKey:attr_name forAppID:appID];
+    [[MOAnalytics sharedInstance]setUserAttribute:value withAttributeName:attr_name forAppID:appID];
 }
 
 -(void)alias:(SEGAliasPayload *)payload{
@@ -197,8 +197,8 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
         NSString* appID = [SEGMoEngageIntegration fetchCurrentAppID];
         id newID = payload.theNewId;
         if (newID != nil){
-            if ([[MoEngage sharedInstance] respondsToSelector:@selector(setAlias:)]){
-                [[MoEngage sharedInstance] setAlias:newID forAppID:appID];
+            if ([[MOAnalytics sharedInstance] respondsToSelector:@selector(setAlias:)]){
+                [[MOAnalytics sharedInstance] setAlias:newID forAppID:appID];
             }
         }
     }
@@ -236,10 +236,10 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
                 NSDate *dateVal = [dateAttributeDict valueForKey:key];
                 [moe_properties addDateAttribute:dateVal withName:key];
             }
-            [[MoEngage sharedInstance] trackEvent:payload.event withProperties:moe_properties forAppID:appID];
+            [[MOAnalytics sharedInstance] trackEvent:payload.event withProperties:moe_properties forAppID:appID];
         }
         else{
-            [[MoEngage sharedInstance] trackEvent:payload.event withProperties:nil forAppID:appID];
+            [[MOAnalytics sharedInstance] trackEvent:payload.event withProperties:nil forAppID:appID];
         }
     }
     @catch(NSException* exception){
@@ -249,13 +249,13 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 
 - (void)flush{
     NSString* appID = [SEGMoEngageIntegration fetchCurrentAppID];
-    [[MoEngage sharedInstance] flushForAppID:appID];
+    [[MOAnalytics sharedInstance]flushForAppID:appID];
 }
 
 
 - (void)reset{
     NSString* appID = [SEGMoEngageIntegration fetchCurrentAppID];
-    [[MoEngage sharedInstance] resetUserForAppID:appID];
+    [[MOAnalytics sharedInstance] resetUserForAppID:appID];
 }
 
 #pragma mark- Utils
