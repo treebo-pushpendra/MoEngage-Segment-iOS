@@ -3,11 +3,9 @@ target 'Segment-MoEngage_Example' do
 
   pod 'Segment-MoEngage', :path => '../'
   
-   pod 'MoEngage-iOS-SDK', :git => 'https://github.com/moengage/MoEngage-iOS-Pods.git', :branch => 'framework'
-  pod 'MoEngageInApp', :git => 'https://github.com/moengage/MoEngage-iOS-Pods.git', :branch => 'framework'
-  pod 'MoEngageRealTimeTrigger', :git => 'https://github.com/moengage/MoEngage-iOS-Pods.git', :branch => 'framework'
-  pod 'MoEngageRichNotification', :git => 'https://github.com/moengage/MoEngage-iOS-Pods.git', :branch => 'framework'
-
+  pod 'MoEngageInApp'
+  pod 'MoEngageRealTimeTrigger'
+  pod 'MoEngageRichNotification'
   target 'Segment-MoEngage_Tests' do
     inherit! :search_paths
 
@@ -21,11 +19,11 @@ end
 
 target 'NotificationService' do
 use_frameworks!
-  pod 'MoEngageRichNotification', :git => 'https://github.com/moengage/MoEngage-iOS-Pods.git', :branch => 'framework'
+  pod 'MoEngageRichNotification'
 end
 
 
 target 'NotificationContent' do
   use_frameworks!
-  pod 'MoEngageRichNotification', :git => 'https://github.com/moengage/MoEngage-iOS-Pods.git', :branch => 'framework'
+  pod 'MoEngageRichNotification'
 end
