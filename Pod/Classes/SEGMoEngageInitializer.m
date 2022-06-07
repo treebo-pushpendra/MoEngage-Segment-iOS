@@ -16,26 +16,27 @@ static MOSDKConfig* currentSDKConfig = nil;
 + (void)initializeDefaultInstance:(MOSDKConfig*)sdkConfig{
     
     [self updateSDKConfig:sdkConfig];
-    [MoEngage.sharedInstance disableSDKForSegment:currentSDKConfig];
+    
     #ifdef DEBUG
         [[MoEngage sharedInstance] initializeDefaultTestInstanceWithConfig:currentSDKConfig andLaunchOptions:nil];
     #else
         [[MoEngage sharedInstance] initializeDefaultLiveInstanceWithConfig:currentSDKConfig andLaunchOptions:nil];
     #endif
     
+    [self trackPluginTypeAndVersion];
 }
 
 + (void)initializeInstance:(MOSDKConfig*)sdkConfig{
     
     [self updateSDKConfig:sdkConfig];
-    [MoEngage.sharedInstance disableSDKForSegment:currentSDKConfig];
 
     #ifdef DEBUG
         [[MoEngage sharedInstance] initializeTestInstanceWithConfig:currentSDKConfig andLaunchOptions:nil];
     #else
         [[MoEngage sharedInstance] initializeLiveInstanceWithConfig:currentSDKConfig andLaunchOptions:nil];
     #endif
-
+    
+    [self trackPluginTypeAndVersion];
 }
 
 + (MOSDKConfig*)fetchSDKConfigObject {
@@ -43,7 +44,7 @@ static MOSDKConfig* currentSDKConfig = nil;
 }
 
 + (void)updateSDKConfig:(MOSDKConfig*)sdkConfig {
-    sdkConfig.integrationInfoArray = @[[[MOIntegrationInfo alloc] initWithPluginType:MOPluginTypeSegment andVersion:[self getSegmentMoEngageVersion]]];
+    [sdkConfig setPartnerIntegrationTypeWithIntegrationType: PartnerIntegrationTypeSegment];
     currentSDKConfig = sdkConfig;
 }
 
@@ -51,6 +52,11 @@ static MOSDKConfig* currentSDKConfig = nil;
     NSDictionary *infoDictionary = [[NSBundle bundleForClass:[SEGMoEngageInitializer class]] infoDictionary];
     NSString *version = [infoDictionary valueForKey:@"CFBundleShortVersionString"];
     return version;
+}
+
++(void)trackPluginTypeAndVersion{
+    MOIntegrationInfo* integrationInfo = [[MOIntegrationInfo alloc] initWithPluginType:@"segment" version:[self getSegmentMoEngageVersion]];
+    [[MOCoreIntegrator sharedInstance]addIntergrationInfoWithInfo:integrationInfo appId:currentSDKConfig.moeAppID];
 }
 
 @end

@@ -2,8 +2,10 @@ target 'Segment-MoEngage_Example' do
   use_frameworks!
 
   pod 'Segment-MoEngage', :path => '../'
+  
   pod 'MoEngageInApp'
-
+  pod 'MoEngageRealTimeTrigger'
+  pod 'MoEngageRichNotification'
   target 'Segment-MoEngage_Tests' do
     inherit! :search_paths
 
@@ -17,11 +19,11 @@ end
 
 target 'NotificationService' do
 use_frameworks!
- pod 'MoEngageRichNotification'
+  pod 'MoEngageRichNotification'
 end
 
 
 target 'NotificationContent' do
   use_frameworks!
- pod 'MoEngageRichNotification'
+  pod 'MoEngageRichNotification'
 end

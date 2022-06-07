@@ -33,9 +33,7 @@
     configuration.trackApplicationLifecycleEvents = YES; // Enable this to record certain application events automatically!
     configuration.recordScreenViews = YES; // Enable this to record screen views automatically!
     [SEGAnalytics setupWithConfiguration:configuration];
-    [[SEGAnalytics sharedAnalytics] identify:@"UniqueID2" traits:nil];
 
-    
     
     //Register for notification
     [[MoEngage sharedInstance] registerForRemoteNotificationWithCategories:nil withUserNotificationCenterDelegate:self];
