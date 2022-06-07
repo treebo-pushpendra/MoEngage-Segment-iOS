@@ -9,7 +9,9 @@
 #import "SEGMoEngageInitializer.h"
 #import <MoEngageSDK/MoEngageSDK.h>
 
+
 static MOSDKConfig* currentSDKConfig = nil;
+static NSString * const segmentVersion = @"7.1.0";
 
 @implementation SEGMoEngageInitializer
 
@@ -48,14 +50,8 @@ static MOSDKConfig* currentSDKConfig = nil;
     currentSDKConfig = sdkConfig;
 }
 
-+(NSString*)getSegmentMoEngageVersion{
-    NSDictionary *infoDictionary = [[NSBundle bundleForClass:[SEGMoEngageInitializer class]] infoDictionary];
-    NSString *version = [infoDictionary valueForKey:@"CFBundleShortVersionString"];
-    return version;
-}
-
 +(void)trackPluginTypeAndVersion{
-    MOIntegrationInfo* integrationInfo = [[MOIntegrationInfo alloc] initWithPluginType:@"segment" version:[self getSegmentMoEngageVersion]];
+    MOIntegrationInfo* integrationInfo = [[MOIntegrationInfo alloc] initWithPluginType:@"segment" version: segmentVersion];
     [[MOCoreIntegrator sharedInstance]addIntergrationInfoWithInfo:integrationInfo appId:currentSDKConfig.moeAppID];
 }
 
