@@ -1,23 +1,19 @@
 PODS:
   - Analytics (4.1.6)
   - Expecta (1.0.6)
-  - MoEngage-iOS-SDK (8.2.0)
-  - MoEngageInApp (3.2.0):
-    - MoEngage-iOS-SDK (< 8.3.0, >= 8.2.0)
-  - MoEngageRealTimeTrigger (1.2.0):
-    - MoEngage-iOS-SDK (< 8.3.0, >= 8.2.0)
-    - MoEngageRichNotification (< 6.3.0, >= 6.2.0)
-  - MoEngageRichNotification (6.2.0):
-    - MoEngage-iOS-SDK (< 8.3.0, >= 8.2.0)
-  - Segment-MoEngage (7.1.0):
+  - MoEngage-iOS-SDK (8.3.0)
+  - MoEngageInApp (3.3.0):
+    - MoEngage-iOS-SDK (< 8.4.0, >= 8.3.0)
+  - MoEngageRichNotification (6.3.0):
+    - MoEngage-iOS-SDK (< 8.4.0, >= 8.3.0)
+  - Segment-MoEngage (7.2.0):
     - Analytics (~> 4.0)
-    - MoEngage-iOS-SDK (< 8.3.0, >= 8.2.0)
+    - MoEngage-iOS-SDK (< 8.4.0, >= 8.3.0)
   - Specta (2.0.0)
 
 DEPENDENCIES:
   - Expecta
   - MoEngageInApp
-  - MoEngageRealTimeTrigger
   - MoEngageRichNotification
   - Segment-MoEngage (from `../`)
   - Specta
@@ -28,7 +24,6 @@ SPEC REPOS:
     - Expecta
     - MoEngage-iOS-SDK
     - MoEngageInApp
-    - MoEngageRealTimeTrigger
     - MoEngageRichNotification
     - Specta
 
@@ -39,13 +34,12 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   Analytics: eefe524436f904b8bb3f8c8c3425280e43b34efc
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
-  MoEngage-iOS-SDK: 3d6cec9825d187c69dc5e5f25a6328cb1d9442f9
-  MoEngageInApp: a4c0385ebf7cc843a90d6c5389d9bb83d9ff9dc6
-  MoEngageRealTimeTrigger: d4d88e1359a17ea83b679b40e3a7bea63a0aad52
-  MoEngageRichNotification: d717b3d061b1146adb69d509c748e81829ba498f
-  Segment-MoEngage: b6f0cb6ddf0ceb91a0c8e8a5ff08be22bd2d39b7
+  MoEngage-iOS-SDK: 5f11b1e47d34243f90fe322611dee0d89960ad18
+  MoEngageInApp: 77d7166cfc04ec6ceb3878794e78d2316645f718
+  MoEngageRichNotification: 76d4b13099f8c6c27a6218cd0e703d46c5eeb92b
+  Segment-MoEngage: ed0680fdcafc3e5cc530764d45b7c50047c73bb9
   Specta: b79d84043684b35ffdc2680df578dc318ec2efc2
 
-PODFILE CHECKSUM: 851e2d8114a3aa950dae3b5703388787576c6f32
+PODFILE CHECKSUM: e693a1a50b768056a5604ef6fc1be9dcc89b343c
 
 COCOAPODS: 1.11.3
