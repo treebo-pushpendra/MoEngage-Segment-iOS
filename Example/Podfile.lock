@@ -1,13 +1,13 @@
 PODS:
-  - Analytics (4.1.5)
+  - Analytics (4.1.6)
   - Expecta (1.0.6)
-  - MoEngage-iOS-SDK (7.1.0):
-    - MORichNotification (< 5.2.0, >= 5.1.0)
-  - MORichNotification (5.1.0)
-  - Segment-MoEngage (6.1.0):
+  - MoEngage-iOS-SDK (7.2.2):
+    - MORichNotification (< 5.4.0, >= 5.3.0)
+  - MORichNotification (5.3.0)
+  - Segment-MoEngage (6.2.0):
     - Analytics (~> 4.0)
-    - MoEngage-iOS-SDK (< 7.2, >= 7.1.0)
-  - Specta (1.0.7)
+    - MoEngage-iOS-SDK (< 7.3.0, >= 7.2.0)
+  - Specta (2.0.0)
 
 DEPENDENCIES:
   - Expecta
@@ -15,7 +15,7 @@ DEPENDENCIES:
   - Specta
 
 SPEC REPOS:
-  https://cdn.cocoapods.org/:
+  trunk:
     - Analytics
     - Expecta
     - MoEngage-iOS-SDK
@@ -27,13 +27,13 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  Analytics: 084a3edda6517e308007c1a7810b8f1e8f2925aa
+  Analytics: eefe524436f904b8bb3f8c8c3425280e43b34efc
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
-  MoEngage-iOS-SDK: f96c05b33bdf39b83b8fcd61d93ed9e90ef70c04
-  MORichNotification: bc588aa1b09b37d9b3a6031c9a05a510f014464d
-  Segment-MoEngage: 4ea236159126c912d26d93e7650d85de231fe523
-  Specta: 3e1bd89c3517421982dc4d1c992503e48bd5fe66
+  MoEngage-iOS-SDK: eeedf235fd0db9d2eacb0becee489b3f66582f1e
+  MORichNotification: 3f4c3f3e6aa4f961811b15e9b6d25c27d923812c
+  Segment-MoEngage: 6fe9a464dbd86173e361c09190e57d53af726548
+  Specta: b79d84043684b35ffdc2680df578dc318ec2efc2
 
 PODFILE CHECKSUM: 38ac674854abdfe5b24229e5daccef7a37a21fa9
 
-COCOAPODS: 1.10.2
+COCOAPODS: 1.11.3
