@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "MoEngage-Swift-Segment",
     platforms: [
-        .iOS("13.0")
+        .iOS(.v11)
     ],
     products: [
         // Products define the executables and libraries a package produces, and make them visible to other packages.
@@ -21,6 +21,7 @@ let package = Package(
     targets: [
         .target(
             name: "MoEngage-Swift-Segment",
+            dependencies: [.product(name: "Segment", package: "analytics-swift"), .product(name: "MoEngage-iOS-SDK", package: "MoEngage-iOS-SDK")],
             path: "Sources/MoEngage-Swift-Segment"),
     ]
 )
