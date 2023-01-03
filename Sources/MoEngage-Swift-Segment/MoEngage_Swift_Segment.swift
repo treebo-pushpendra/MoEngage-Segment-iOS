@@ -48,7 +48,7 @@ public class MoEngageDestination: UIResponder, DestinationPlugin {
         }
         
         if let traits = event.traits?.dictionaryValue {
-            if let birthday = traits["birthday"] as? String {
+            if let birthday = traits[UserAttributes.birthday.rawValue] as? String {
                 let dateformatter = DateFormatter()
                 dateformatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZZ"
                 if let formattedBirthday = dateformatter.date(from: birthday) {
@@ -56,27 +56,27 @@ public class MoEngageDestination: UIResponder, DestinationPlugin {
                 }
             }
             
-            if let name = traits["name"] as? String {
+            if let name = traits[UserAttributes.name.rawValue] as? String {
                 MoEngageSDKAnalytics.sharedInstance.setName(name, forAppID: moengageSettings?.apiKey)
             }
-            if let birthday = traits["isoBirthday"] as? String {
+            if let birthday = traits[UserAttributes.isoBirthday.rawValue] as? String {
                 MoEngageSDKAnalytics.sharedInstance.setDateOfBirthInISO(birthday, forAppID: moengageSettings?.apiKey)
                 
             }
             
-            if let email = traits["email"] as? String {
+            if let email = traits[UserAttributes.email.rawValue] as? String {
                 MoEngageSDKAnalytics.sharedInstance.setEmailID(email, forAppID: moengageSettings?.apiKey)
             }
 
-            if let firstName = traits["firstName"] as? String {
+            if let firstName = traits[UserAttributes.firstName.rawValue] as? String {
                 MoEngageSDKAnalytics.sharedInstance.setFirstName(firstName, forAppID: moengageSettings?.apiKey)
             }
 
-            if let lastName = traits["lastName"] as? String {
+            if let lastName = traits[UserAttributes.lastName.rawValue] as? String {
                 MoEngageSDKAnalytics.sharedInstance.setLastName(lastName, forAppID: moengageSettings?.apiKey)
             }
             
-            if let gender = traits["gender"] as? String {
+            if let gender = traits[UserAttributes.gender.rawValue] as? String {
                 if gender.lowercased() == "m" || gender.lowercased() == "male" {
                     MoEngageSDKAnalytics.sharedInstance.setGender(.male, forAppID: moengageSettings?.apiKey)
                 }
@@ -88,23 +88,23 @@ public class MoEngageDestination: UIResponder, DestinationPlugin {
                 }
             }
                         
-            if let phone = traits["phone"] as? String {
+            if let phone = traits[UserAttributes.phone.rawValue] as? String {
                 MoEngageSDKAnalytics.sharedInstance.setMobileNumber(phone, forAppID: moengageSettings?.apiKey)
             }
        
-            if let isoDate = traits["isoDate"] as? [String: Any] {
+            if let isoDate = traits[UserAttributes.isoDate.rawValue] as? [String: Any] {
                 if let date = isoDate["date"] as? Date, let attributeName = isoDate["attributeName"] as? String {
                     MoEngageSDKAnalytics.sharedInstance.setUserAttributeDate(date, withAttributeName: attributeName, forAppID: moengageSettings?.apiKey)
                 }
             }
             
-            if let location = traits["location"] as? [String: Any] {
+            if let location = traits[UserAttributes.location.rawValue] as? [String: Any] {
                 if let latitute = location["latitude"] as? Double, let longitude = location["longitude"] as? Double {
                     MoEngageSDKAnalytics.sharedInstance.setLocation(MoEngageGeoLocation.init(withLatitude: latitute, andLongitude: longitude))
                 }
             }
             
-            let moengageTraits = ["userName", "phone", "gender", "lastName", "firstName", "email", "isoBirthday", "isoDate", "location"]
+            let moengageTraits = UserAttributes.allCases
             
             for trait in traits where !moengageTraits.contains(trait.key) {
                 switch trait.value {
@@ -192,14 +192,6 @@ public class MoEngageDestination: UIResponder, DestinationPlugin {
     }
 }
 
-// MARK: - Application Life cycle methods
-extension MoEngageDestination: iOSLifecycle {
-
-    public func application(_ application: UIApplication?, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]?) {
-        print("Test")
-    }
-}
-
 // MARK: - Push Notification methods
 
 extension MoEngageDestination: RemoteNotifications {
@@ -231,4 +223,18 @@ extension MoEngageDestination: UNUserNotificationCenterDelegate {
 
 public struct MoEngageSettings: Codable {
     public var apiKey: String
+}
+
+enum UserAttributes: String, CaseIterable {
+    case userName
+    case phone
+    case gender
+    case lastName
+    case firstName
+    case email
+    case isoBirthday
+    case isoDate
+    case location
+    case birthday
+    case name
 }

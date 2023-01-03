@@ -16,7 +16,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
 
         // Set Unique Id for Segment
-        Analytics.main.identify(userId: "MoE_UniqueID-Ini")
+        Analytics.main.identify(userId: "MoE_UniqueID")
     }
 
 }
@@ -74,7 +74,7 @@ extension ViewController: UITableViewDelegate {
             events["general"] = "value"
             events["audioPlayed"] = "Dangerous"
             events["artist"] = "David Garrett"
-            Analytics.main.track(name: "Test-AppDelegate", properties: events)
+            Analytics.main.track(name: "Test", properties: events)
         case .flush:
             Analytics.main.flush()
         case .resetUser:
