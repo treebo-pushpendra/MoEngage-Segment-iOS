@@ -1,0 +1,32 @@
+{
+  "pins" : [
+    {
+      "identity" : "analytics-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "git@github.com:segmentio/analytics-swift.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "9cf108a2a4a9c2657572e58a1129e288331de03a"
+      }
+    },
+    {
+      "identity" : "moengage-ios-sdk",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/moengage/MoEngage-iOS-SDK.git",
+      "state" : {
+        "branch" : "master",
+        "revision" : "2ff24ee1b6d817afb97c5f8350d7503fd2a74e1f"
+      }
+    },
+    {
+      "identity" : "sovran-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/segmentio/Sovran-Swift.git",
+      "state" : {
+        "revision" : "944c17d7c46bd95fc37f09136cabd172be5b413b",
+        "version" : "1.0.3"
+      }
+    }
+  ],
+  "version" : 2
+}
