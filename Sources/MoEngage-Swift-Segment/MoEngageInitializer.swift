@@ -34,7 +34,7 @@ public class MoEngageInitializer: NSObject {
 #if DEBUG
         MoEngage.sharedInstance.initializeTestInstance(sdkConfig)
 #else
-        MoEngage.sharedInstance.initializeiveInstance(sdkConfig)
+        MoEngage.sharedInstance.initializeLiveInstance(sdkConfig)
 #endif
         trackPluginTypeAndVersion(sdkConfig: sdkConfig)
     }
