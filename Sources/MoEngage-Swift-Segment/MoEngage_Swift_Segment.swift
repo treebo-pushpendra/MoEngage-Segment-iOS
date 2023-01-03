@@ -104,7 +104,7 @@ public class MoEngageDestination: UIResponder, DestinationPlugin {
                 }
             }
             
-            let moengageTraits = UserAttributes.allCases
+            let moengageTraits = UserAttributes.allCases.map { $0.rawValue }
             
             for trait in traits where !moengageTraits.contains(trait.key) {
                 switch trait.value {

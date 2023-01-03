@@ -1,5 +1,10 @@
 Change Log
 ==========
+Version 8.0.0 *(Date)*
+-------------------------------------------
+* Updated swift package for Segment
+* Updated MoEngage SDK Dependency to 9.2.* . 
+
 Version 7.5.0 *(14th December, 2022)*
 -------------------------------------------
 * Updated MoEngage SDK Dependency to 8.6.*
