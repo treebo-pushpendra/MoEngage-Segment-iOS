@@ -8,7 +8,7 @@
 #import <MoEngageSDK/MoEngageSDK.h>
 @interface SEGMoEngageInitializer : NSObject
 
-+ (void)initializeDefaultInstance:(MOSDKConfig*)sdkConfig;
-+ (void)initializeInstance:(MOSDKConfig*)sdkConfig;
-+ (MOSDKConfig*)fetchSDKConfigObject;
++ (void)initializeDefaultInstance:(MoEngageSDKConfig*)sdkConfig;
++ (void)initializeInstance:(MoEngageSDKConfig*)sdkConfig;
++ (MoEngageSDKConfig*)fetchSDKConfigObject;
 @end
