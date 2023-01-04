@@ -24,7 +24,7 @@
     
     [SEGAnalytics debug:true];
 
-    MOSDKConfig* sdkConfig = [[MOSDKConfig alloc] initWithAppID:@"YOUR APP ID"];
+    MoEngageSDKConfig* sdkConfig = [[MoEngageSDKConfig alloc] initWithAppID:@"YOUR APP ID"];
     sdkConfig.enableLogs = true;
     [SEGMoEngageInitializer initializeDefaultInstance:sdkConfig];
 
@@ -36,7 +36,7 @@
 
     
     //Register for notification
-    [[MoEngage sharedInstance] registerForRemoteNotificationWithCategories:nil withUserNotificationCenterDelegate:self];
+    [[MoEngageSDKMessaging sharedInstance] registerForRemoteNotificationWithCategories:nil andUserNotificationCenterDelegate:self];
     return YES;
 }
 
@@ -50,7 +50,7 @@
 
 #pragma mark- UserNotifications delegate methods
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)(void))completionHandler{
-    [[MoEngage sharedInstance] userNotificationCenter:center didReceiveNotificationResponse:response];
+    [[MoEngageSDKMessaging sharedInstance] userNotificationCenter:center didReceive:response];
     completionHandler();
 }
 
