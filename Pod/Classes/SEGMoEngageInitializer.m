@@ -11,7 +11,7 @@
 
 
 static MoEngageSDKConfig* currentSDKConfig = nil;
-static NSString * const segmentVersion = @"8.0.0";
+static NSString * const segmentVersion = @"7.1.0";
 
 @implementation SEGMoEngageInitializer
 
