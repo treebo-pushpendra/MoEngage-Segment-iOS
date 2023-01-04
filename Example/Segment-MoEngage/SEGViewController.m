@@ -28,7 +28,7 @@
     [[SEGAnalytics sharedAnalytics] identify:@"UniqueID2" traits:@{@"email":@"testinload11@moe.com"}];
     self.data = @[@"Set Unique ID", @"Set User Attribute", @"Set Custom Attribute", @"Set Alias",@"Track Event",@"Show InApp", @"Reset User"];
     [[SEGAnalytics sharedAnalytics] identify:@"UniqueID2" traits:@{@"lastName":@"lastname1"}];
-    [MOInApp.sharedInstance showInAppCampaign];
+    [MoEngageSDKInApp.sharedInstance showInApp];
 
 }
 
@@ -99,7 +99,7 @@
             break;
         
         case 5:
-            [MOInApp.sharedInstance showInAppCampaignForAppID:@"DAO6UGZ73D9RTK8B5W96TPYN"];
+            [[MoEngageSDKInApp sharedInstance] showInAppForAppId:@"DAO6UGZ73D9RTK8B5W96TPYN"];
             break;
         case 6:
             [[SEGAnalytics sharedAnalytics] reset];

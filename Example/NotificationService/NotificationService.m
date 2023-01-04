@@ -22,8 +22,8 @@
     self.contentHandler = contentHandler;
     self.bestAttemptContent = [request.content mutableCopy];
     
-    [MORichNotification setAppGroupID:@"group.com.alphadevs.MoEngage.NotificationServices"];
-    [MORichNotification handleWithRichNotificationRequest:request withContentHandler:contentHandler];
+    [MoEngageSDKRichNotification setAppGroupID:@"group.com.alphadevs.MoEngage.NotificationServices"];
+    [MoEngageSDKRichNotification handleWithRichNotificationRequest:request withContentHandler:contentHandler];
 }
 
 - (void)serviceExtensionTimeWillExpire {

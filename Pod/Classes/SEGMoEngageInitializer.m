@@ -10,49 +10,49 @@
 #import <MoEngageSDK/MoEngageSDK.h>
 
 
-static MOSDKConfig* currentSDKConfig = nil;
+static MoEngageSDKConfig* currentSDKConfig = nil;
 static NSString * const segmentVersion = @"7.1.0";
 
 @implementation SEGMoEngageInitializer
 
-+ (void)initializeDefaultInstance:(MOSDKConfig*)sdkConfig{
++ (void)initializeDefaultInstance:(MoEngageSDKConfig*)sdkConfig{
     
     [self updateSDKConfig:sdkConfig];
     
-    #ifdef DEBUG
-        [[MoEngage sharedInstance] initializeDefaultTestInstanceWithConfig:currentSDKConfig andLaunchOptions:nil];
-    #else
-        [[MoEngage sharedInstance] initializeDefaultLiveInstanceWithConfig:currentSDKConfig andLaunchOptions:nil];
-    #endif
+#ifdef DEBUG
+    [[MoEngage sharedInstance] initializeDefaultTestInstance:currentSDKConfig];
+#else
+    [[MoEngage sharedInstance] initializeDefaultLiveInstance:currentSDKConfig];
+#endif
     
     [self trackPluginTypeAndVersion];
 }
 
-+ (void)initializeInstance:(MOSDKConfig*)sdkConfig{
++ (void)initializeInstance:(MoEngageSDKConfig*)sdkConfig{
     
     [self updateSDKConfig:sdkConfig];
-
-    #ifdef DEBUG
-        [[MoEngage sharedInstance] initializeTestInstanceWithConfig:currentSDKConfig andLaunchOptions:nil];
-    #else
-        [[MoEngage sharedInstance] initializeLiveInstanceWithConfig:currentSDKConfig andLaunchOptions:nil];
-    #endif
+    
+#ifdef DEBUG
+    [[MoEngage sharedInstance] initializeTestInstance:sdkConfig];
+#else
+    [[MoEngage sharedInstance] initializeLiveInstance:sdkConfig];
+#endif
     
     [self trackPluginTypeAndVersion];
 }
 
-+ (MOSDKConfig*)fetchSDKConfigObject {
++ (MoEngageSDKConfig*)fetchSDKConfigObject {
     return currentSDKConfig;
 }
 
-+ (void)updateSDKConfig:(MOSDKConfig*)sdkConfig {
-    [sdkConfig setPartnerIntegrationTypeWithIntegrationType: PartnerIntegrationTypeSegment];
++ (void)updateSDKConfig:(MoEngageSDKConfig*)sdkConfig {
+    [sdkConfig setPartnerIntegrationTypeWithIntegrationType: MoEngagePartnerIntegrationTypeSegment];
     currentSDKConfig = sdkConfig;
 }
 
 +(void)trackPluginTypeAndVersion{
-    MOIntegrationInfo* integrationInfo = [[MOIntegrationInfo alloc] initWithPluginType:@"segment" version: segmentVersion];
-    [[MOCoreIntegrator sharedInstance]addIntergrationInfoWithInfo:integrationInfo appId:currentSDKConfig.moeAppID];
+    MoEngageIntegrationInfo* integrationInfo = [[MoEngageIntegrationInfo alloc] initWithPluginType:@"segment" version: segmentVersion];
+    [[MoEngageCoreIntegrator sharedInstance]addIntergrationInfoWithInfo:integrationInfo appId:currentSDKConfig.moeAppID];
 }
 
 @end
