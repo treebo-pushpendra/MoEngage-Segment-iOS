@@ -1,10 +1,15 @@
 Change Log
 ==========
-Version 8.0.0 *(Date)*
+
+Version 9.0.0 *(Date)*
 -------------------------------------------
 * Updated swift package for Segment
 * Updated MoEngage SDK Dependency to 9.2.* .
 * Removed support for pod.
+
+Version 8.0.0 *(4th January, 2023)*
+-------------------------------------------
+* Updated MoEngage SDK Dependency to 9.2.*
 
 Version 7.5.0 *(14th December, 2022)*
 -------------------------------------------
