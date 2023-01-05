@@ -7,7 +7,7 @@
 
 import UIKit
 import Segment
-import MoEngage_Swift_Segment
+import Segment_MoEngage
 import MoEngageSDK
 
 @main

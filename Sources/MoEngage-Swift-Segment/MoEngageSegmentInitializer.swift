@@ -10,7 +10,7 @@ import Segment
 
 @objc
 public class MoEngageSegmentInitializer: NSObject {
-    public static let shared = MoEngageSegmentInitializer()
+    @objc public static let shared = MoEngageSegmentInitializer()
     
     public var analytics: Analytics!
     
@@ -18,13 +18,13 @@ public class MoEngageSegmentInitializer: NSObject {
 
     }
     
-    public func initializeSegmentAnalytics(writeKey: String) {
+    @objc public func initializeSegmentAnalytics(writeKey: String, flushAt: Int = 3, flushInterval: TimeInterval = 10) {
         guard analytics == nil else { return }
         let config = Configuration(writeKey: writeKey)
             // Automatically track Lifecycle events
             .trackApplicationLifecycleEvents(true)
-            .flushAt(3)
-            .flushInterval(10)
+            .flushAt(flushAt)
+            .flushInterval(flushInterval)
 
         analytics = Analytics(configuration: config)
         analytics.add(plugin: MoEngageDestination())

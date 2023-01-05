@@ -22,13 +22,10 @@ public class MoEngageDestination: UIResponder, DestinationPlugin {
         guard let tempSettings: MoEngageSettings = settings.integrationSettings(forPlugin: self) else { return }
         moengageSettings = tempSettings
         
-        guard let appID = moengageSettings?.apiKey, let moeAppID = MoEngageInitializer.shared.config?.moeAppID else {
+        guard let appID = moengageSettings?.apiKey, let moeAppID = MoEngageInitializer.shared.config?.moeAppID, appID == moeAppID else {
             return
         }
-        if appID != moeAppID {
-            return
-        }
-                
+   
         MoEngageCoreIntegrator.sharedInstance.enableSDKForSegment(instanceID: appID)
         
         DispatchQueue.main.async {
@@ -76,11 +73,11 @@ public class MoEngageDestination: UIResponder, DestinationPlugin {
                 MoEngageSDKAnalytics.sharedInstance.setLastName(lastName, forAppID: moengageSettings?.apiKey)
             }
             
-            if let gender = traits[UserAttributes.gender.rawValue] as? String {
-                if gender.lowercased() == "m" || gender.lowercased() == "male" {
+            if let gender = (traits[UserAttributes.gender.rawValue] as? String)?.lowercased() {
+                if gender == "m" || gender == "male" {
                     MoEngageSDKAnalytics.sharedInstance.setGender(.male, forAppID: moengageSettings?.apiKey)
                 }
-                else if gender.lowercased() == "f" || gender.lowercased() == "female" {
+                else if gender == "f" || gender == "female" {
                     MoEngageSDKAnalytics.sharedInstance.setGender(.female, forAppID: moengageSettings?.apiKey)
                 }
                 else {
@@ -100,7 +97,7 @@ public class MoEngageDestination: UIResponder, DestinationPlugin {
             
             if let location = traits[UserAttributes.location.rawValue] as? [String: Any] {
                 if let latitute = location["latitude"] as? Double, let longitude = location["longitude"] as? Double {
-                    MoEngageSDKAnalytics.sharedInstance.setLocation(MoEngageGeoLocation.init(withLatitude: latitute, andLongitude: longitude))
+                    MoEngageSDKAnalytics.sharedInstance.setLocation(MoEngageGeoLocation(withLatitude: latitute, andLongitude: longitude))
                 }
             }
             
@@ -108,16 +105,8 @@ public class MoEngageDestination: UIResponder, DestinationPlugin {
             
             for trait in traits where !moengageTraits.contains(trait.key) {
                 switch trait.value {
-                case let val as String:
-                    MoEngageSDKAnalytics.sharedInstance.setUserAttribute(val, withAttributeName: trait.key, forAppID: moengageSettings?.apiKey)
                 case let val as Date:
                     MoEngageSDKAnalytics.sharedInstance.setUserAttributeDate(val, withAttributeName: trait.key, forAppID: moengageSettings?.apiKey)
-                case let val as Bool:
-                    MoEngageSDKAnalytics.sharedInstance.setUserAttribute(val, withAttributeName: trait.key, forAppID: moengageSettings?.apiKey)
-                case let val as Int:
-                    MoEngageSDKAnalytics.sharedInstance.setUserAttribute(val, withAttributeName: trait.key, forAppID: moengageSettings?.apiKey)
-                case let val as Double:
-                    MoEngageSDKAnalytics.sharedInstance.setUserAttribute(val, withAttributeName: trait.key, forAppID: moengageSettings?.apiKey)
                 default:
                     MoEngageSDKAnalytics.sharedInstance.setUserAttribute(trait.value, withAttributeName: trait.key, forAppID: moengageSettings?.apiKey)
                 }
@@ -129,14 +118,11 @@ public class MoEngageDestination: UIResponder, DestinationPlugin {
 
     public func track(event: TrackEvent) -> TrackEvent? {
         if var generalAttributeDict = event.properties?.dictionaryValue {
-            var dateAttributeDict: [AnyHashable : Any] = [:]
+            var dateAttributeDict: [String : Date] = [:]
             
             for key in generalAttributeDict.keys {
                 let val = generalAttributeDict[key]
-                if val == nil || (val as? NSNull) == NSNull() {
-                    generalAttributeDict.removeValue(forKey: key)
-                    continue
-                } else if val is String {
+                if val is String {
                     let converted_date = date(fromISOdateStr: val as? String)
                     if let converted_date {
                         dateAttributeDict[key] = converted_date
@@ -147,10 +133,7 @@ public class MoEngageDestination: UIResponder, DestinationPlugin {
             }
             let moe_properties = MoEngageProperties(withAttributes: generalAttributeDict)
             for key in dateAttributeDict.keys {
-                guard let key = key as? String else {
-                    continue
-                }
-                if let dateVal = dateAttributeDict[key] as? Date {
+                if let dateVal = dateAttributeDict[key] {
                     moe_properties.addDateAttribute(dateVal, withName: key)
                 }
             }
@@ -159,36 +142,29 @@ public class MoEngageDestination: UIResponder, DestinationPlugin {
 
         return event
     }
-    
 
     func date(fromISOdateStr isoDateStr: String?) -> Date? {
         var dateFormatter: DateFormatter?
         if let isoDateStr {
-            dateFormatter = DateFormatter()
-            dateFormatter!.locale = Locale(identifier: "en_US_POSIX")
-            dateFormatter!.dateFormat = "yyyy'-'MM'-'dd'T'HH':'mm':'ss.SSS'Z'"
-            dateFormatter!.timeZone = NSTimeZone(forSecondsFromGMT: 0) as TimeZone
+            dateFormatter = MoEngageDateUtils.dateFormatterForUsPosixLocale(withFormat: "yyyy'-'MM'-'dd'T'HH':'mm':'ss.SSS'Z'", forGMTTimeZone: true)
             return dateFormatter?.date(from: isoDateStr)
         }
         return nil
     }
     
     public func alias(event: AliasEvent) -> AliasEvent? {
-        let appId = moengageSettings?.apiKey
         if let userId = event.userId {
-            MoEngageSDKAnalytics.sharedInstance.setAlias(userId, forAppID: appId)
+            MoEngageSDKAnalytics.sharedInstance.setAlias(userId, forAppID: moengageSettings?.apiKey)
         }
         return event
     }
     
     public func flush() {
-        let appID = moengageSettings?.apiKey
-        MoEngageSDKAnalytics.sharedInstance.flush(forAppID: appID)
+        MoEngageSDKAnalytics.sharedInstance.flush(forAppID: moengageSettings?.apiKey)
     }
     
     public func reset() {
-        let appID = moengageSettings?.apiKey
-        MoEngageSDKAnalytics.sharedInstance.resetUser(forAppID: appID)
+        MoEngageSDKAnalytics.sharedInstance.resetUser(forAppID: moengageSettings?.apiKey)
     }
 }
 
@@ -217,12 +193,13 @@ extension MoEngageDestination: UNUserNotificationCenterDelegate {
     
     @available(iOS 10.0, *)
     public func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        MoEngageSDKMessaging.sharedInstance.userNotificationCenter(center, didReceive: response)
         completionHandler()
     }
 }
 
-public struct MoEngageSettings: Codable {
-    public var apiKey: String
+struct MoEngageSettings: Codable {
+    var apiKey: String
 }
 
 enum UserAttributes: String, CaseIterable {

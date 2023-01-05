@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		144F5BA529668C6400026A7B /* Segment-MoEngage in Frameworks */ = {isa = PBXBuildFile; productRef = 144F5BA429668C6400026A7B /* Segment-MoEngage */; };
 		145284F0295C27A900D31479 /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 145284EF295C27A900D31479 /* TableViewCell.swift */; };
 		14D9EC822959A518001AE669 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14D9EC812959A518001AE669 /* AppDelegate.swift */; };
 		14D9EC842959A518001AE669 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14D9EC832959A518001AE669 /* SceneDelegate.swift */; };
@@ -16,10 +17,10 @@
 		14D9EC8E2959A51B001AE669 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 14D9EC8C2959A51B001AE669 /* LaunchScreen.storyboard */; };
 		14D9EC982959A56A001AE669 /* Segment in Frameworks */ = {isa = PBXBuildFile; productRef = 14D9EC972959A56A001AE669 /* Segment */; };
 		14D9EC9B2959A989001AE669 /* MoEngage-iOS-SDK in Frameworks */ = {isa = PBXBuildFile; productRef = 14D9EC9A2959A989001AE669 /* MoEngage-iOS-SDK */; };
-		14E9C1D62963EC4C00F4B006 /* MoEngage-Swift-Segment in Frameworks */ = {isa = PBXBuildFile; productRef = 14E9C1D52963EC4C00F4B006 /* MoEngage-Swift-Segment */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		144F5BA329668BFF00026A7B /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Package.swift; path = ../../Package.swift; sourceTree = "<group>"; };
 		145284EF295C27A900D31479 /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
 		149B582F2959CDBA00347BEC /* MoEngage-Swift-Segment */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "MoEngage-Swift-Segment"; path = ../..; sourceTree = "<group>"; };
 		14AEF0182962E68B0037DC4A /* BasicExample.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BasicExample.entitlements; sourceTree = "<group>"; };
@@ -38,7 +39,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				14E9C1D62963EC4C00F4B006 /* MoEngage-Swift-Segment in Frameworks */,
+				144F5BA529668C6400026A7B /* Segment-MoEngage in Frameworks */,
 				14D9EC9B2959A989001AE669 /* MoEngage-iOS-SDK in Frameworks */,
 				14D9EC982959A56A001AE669 /* Segment in Frameworks */,
 			);
@@ -58,6 +59,7 @@
 		149B58312959CF0400347BEC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				144F5BA329668BFF00026A7B /* Package.swift */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -115,7 +117,7 @@
 			packageProductDependencies = (
 				14D9EC972959A56A001AE669 /* Segment */,
 				14D9EC9A2959A989001AE669 /* MoEngage-iOS-SDK */,
-				14E9C1D52963EC4C00F4B006 /* MoEngage-Swift-Segment */,
+				144F5BA429668C6400026A7B /* Segment-MoEngage */,
 			);
 			productName = BasicExample;
 			productReference = 14D9EC7E2959A518001AE669 /* BasicExample.app */;
@@ -422,6 +424,10 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		144F5BA429668C6400026A7B /* Segment-MoEngage */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = "Segment-MoEngage";
+		};
 		14D9EC972959A56A001AE669 /* Segment */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 14D9EC962959A56A001AE669 /* XCRemoteSwiftPackageReference "analytics-swift" */;
@@ -431,10 +437,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 14D9EC992959A989001AE669 /* XCRemoteSwiftPackageReference "MoEngage-iOS-SDK" */;
 			productName = "MoEngage-iOS-SDK";
-		};
-		14E9C1D52963EC4C00F4B006 /* MoEngage-Swift-Segment */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = "MoEngage-Swift-Segment";
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

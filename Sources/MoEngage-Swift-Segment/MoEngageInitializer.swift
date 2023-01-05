@@ -8,18 +8,21 @@
 import Foundation
 import MoEngageSDK
 
+/// This class is used for initializing the MoEngageSDK
 @objc
 public class MoEngageInitializer: NSObject {
     
-    public static let shared = MoEngageInitializer()
-    public var config: MoEngageSDKConfig?
+    @objc public static let shared = MoEngageInitializer()
+    @objc public var config: MoEngageSDKConfig?
     
-    private let segmentVersion = "7.1.0"
+    private let segmentVersion = "8.0.0"
     private override init() {
         
     }
     
-    public func initializeDefaultInstance(sdkConfig: MoEngageSDKConfig) {
+    /// Method to initialize the default instance of MoEngageSDK
+    /// - Parameter sdkConfig: MoEngageSDKConfig
+    @objc public func initializeDefaultInstance(sdkConfig: MoEngageSDKConfig) {
         updateSDKConfig(sdkConfig: sdkConfig)
 #if DEBUG
         MoEngage.sharedInstance.initializeDefaultTestInstance(sdkConfig)
@@ -29,7 +32,9 @@ public class MoEngageInitializer: NSObject {
         trackPluginTypeAndVersion(sdkConfig: sdkConfig)
     }
     
-    public func initializeInstance(sdkConfig: MoEngageSDKConfig) {
+    /// Method to initialize the other instance of MoEngageSDK
+    /// - Parameter sdkConfig: MoEngageSDKConfig
+    @objc public func initializeInstance(sdkConfig: MoEngageSDKConfig) {
         updateSDKConfig(sdkConfig: sdkConfig)
 #if DEBUG
         MoEngage.sharedInstance.initializeTestInstance(sdkConfig)
@@ -39,12 +44,12 @@ public class MoEngageInitializer: NSObject {
         trackPluginTypeAndVersion(sdkConfig: sdkConfig)
     }
     
-    func updateSDKConfig(sdkConfig: MoEngageSDKConfig) {
+    @objc func updateSDKConfig(sdkConfig: MoEngageSDKConfig) {
         sdkConfig.setPartnerIntegrationType(integrationType: MoEngagePartnerIntegrationType.segment)
         config = sdkConfig
     }
     
-    func trackPluginTypeAndVersion(sdkConfig: MoEngageSDKConfig) {
+    @objc func trackPluginTypeAndVersion(sdkConfig: MoEngageSDKConfig) {
         let integrationInfo = MoEngageIntegrationInfo(pluginType: "segment", version: segmentVersion)
         MoEngageCoreIntegrator.sharedInstance.addIntergrationInfo(info: integrationInfo, appId: sdkConfig.moeAppID)
     }
