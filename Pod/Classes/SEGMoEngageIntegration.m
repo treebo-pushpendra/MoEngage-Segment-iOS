@@ -21,7 +21,7 @@
         
         MoEngageSDKConfig* currentConfig = [SEGMoEngageInitializer fetchSDKConfigObject];
         
-        if (![appID isEqual:currentConfig.moeAppID]) {
+        if (![appID isEqual:currentConfig.appId]) {
             NSLog(@"Failed to Enable SDK due to AppID mismatch.Make sure to initialize SEGMoEngageInitializer with same appID.");
             return self;
         }
@@ -276,6 +276,6 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 }
 
 +(NSString*)fetchCurrentAppID {
-    return [SEGMoEngageInitializer fetchSDKConfigObject].moeAppID;
+    return [SEGMoEngageInitializer fetchSDKConfigObject].appId;
 }
 @end

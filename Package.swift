@@ -15,7 +15,7 @@ let package = Package(
     ],
     dependencies: [
         .package(name: "Segment",url: "https://github.com/segmentio/analytics-ios.git", from: "4.0.0"),
-        .package(name: "MoEngage-iOS-SDK",url: "https://github.com/moengage/MoEngage-iOS-SDK.git", from: "9.4.0"),
+        .package(name: "MoEngage-iOS-SDK",url: "https://github.com/moengage/MoEngage-iOS-SDK.git", from: "9.5.0"),
     
     ],
     targets: [

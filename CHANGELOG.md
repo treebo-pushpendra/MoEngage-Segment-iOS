@@ -1,5 +1,9 @@
 Change Log
 ==========
+Version 8.2.0 *(22nd February, 2023)*
+-------------------------------------------
+* Updated MoEngage SDK Dependency to 9.5.*
+
 Version 8.1.0 *(6th February, 2023)*
 -------------------------------------------
 * Updated MoEngage SDK Dependency to 9.4.*
