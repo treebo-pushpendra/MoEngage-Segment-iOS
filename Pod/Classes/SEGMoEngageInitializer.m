@@ -11,7 +11,7 @@
 
 
 static MoEngageSDKConfig* currentSDKConfig = nil;
-static NSString * const segmentVersion = @"8.0.0";
+static NSString * const segmentVersion = @"8.2.0";
 
 @implementation SEGMoEngageInitializer
 
@@ -52,7 +52,7 @@ static NSString * const segmentVersion = @"8.0.0";
 
 +(void)trackPluginTypeAndVersion{
     MoEngageIntegrationInfo* integrationInfo = [[MoEngageIntegrationInfo alloc] initWithPluginType:@"segment" version: segmentVersion];
-    [[MoEngageCoreIntegrator sharedInstance]addIntergrationInfoWithInfo:integrationInfo appId:currentSDKConfig.moeAppID];
+    [[MoEngageCoreIntegrator sharedInstance]addIntergrationInfoWithInfo:integrationInfo appId:currentSDKConfig.appId];
 }
 
 @end
